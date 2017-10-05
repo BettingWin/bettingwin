@@ -1,0 +1,98 @@
+parameter
+  (or 
+    (or 
+      unit                  # function: get_token_info
+      key)                  # function: get_balance
+    (or 
+      (pair key nat)        # function: transfer_token
+      unit));               # any extension function should be added here
+
+storage 
+  (pair 
+    unit                    # any extension data should be stored here
+    (pair 
+      (map key nat)         # address balance map
+      (pair 
+        nat                 # total supply
+        (pair 
+          nat               # decimals
+          (pair 
+            string          # name
+            string)))));    # symbol
+
+return 
+  (pair 
+    nat                     # error return (0: success; 1: no such account; 2: balance insufficient)
+    (or 
+      (or 
+        (pair nat (pair nat (pair string string)))    # get_token_info return         
+        nat)                                          # get_balance return (X: balance)
+      (or
+        unit                # transfer return
+        unit)));            # extension return should be added here
+
+code 
+  { DUP; CAR; DIP { CDR };
+    IF_LEFT
+      { IF_LEFT
+          { # function: get_token_info
+            DROP; DUP; DUP; CAR; DIP { CDR }; DROP; DUP; CAR; DIP { CDR }; DROP;
+            LEFT nat;
+            LEFT (or unit unit);
+            PUSH nat 0; PAIR;
+            PAIR }
+          { # function: get_balance
+            DIP { DUP; CDAR };
+            GET;
+            IF_SOME
+              { RIGHT (pair nat (pair nat (pair string string)));
+                LEFT (or unit unit);
+                PUSH nat 0; PAIR;
+                PAIR }
+              { UNIT; LEFT unit; 
+                RIGHT (or (pair nat (pair nat (pair string string))) nat); 
+                PUSH nat 1; PAIR; PAIR} } } 
+      { IF_LEFT
+          { # function: transfer_token
+            DUP; CAR; DIP { CDR }; DIIP { DUP; CAR; DIP { CDR }; SWAP; DUP; CAR; DIP { CDR }};
+            SOURCE unit unit; MANAGER;
+            DUUUUP;DUUP;
+            GET;
+            IF_SOME
+              { DUUUUP;DUUP;
+                IFCMPGE
+                  { DUUUUUP;DUUUUP;
+                    GET;
+                    IF_SOME
+                      {}
+                      { PUSH nat 0 }; 
+                    DUUUUUP;DUUUP;
+                    SUB; ABS; SOME;
+                    DUUUUUUP;DUUUP;
+                    ADD; SOME;
+                    DUUUUUUUUP;DUUP;DUUUUUUUUP;
+                    UPDATE;
+                    DUP;DUUUUP;DUUUUUUUUP;
+                    UPDATE;
+                    DUUUUUUUUUUUP;DUUP; PAIR;
+                    DIP { DROP; DROP; DROP; 
+                          DROP; DROP; DROP; 
+                          DROP; DROP; DROP; 
+                          DROP; DROP };
+                    SWAP; PAIR;
+                    UNIT; LEFT unit; 
+                    RIGHT (or (pair nat (pair nat (pair string string))) nat); 
+                    PUSH nat 0; PAIR; PAIR}
+                  { DROP; DROP; DROP; DROP; PAIR; SWAP; PAIR; 
+                    UNIT; LEFT unit; 
+                    RIGHT (or (pair nat (pair nat (pair string string))) nat); 
+                    PUSH nat 2; PAIR; PAIR} } 
+              { DROP; DROP; DROP; PAIR; SWAP; PAIR; 
+                UNIT; LEFT unit; 
+                RIGHT (or (pair nat (pair nat (pair string string))) nat); 
+                PUSH nat 1; PAIR; PAIR}}
+          { # extension return should be added here
+            RIGHT unit;
+            RIGHT (or (pair nat (pair nat (pair string string))) nat);
+            PUSH nat 0; PAIR;
+            PAIR } } };
