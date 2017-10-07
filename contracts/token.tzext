@@ -51,7 +51,7 @@ code
                 LEFT (or unit unit);
                 PUSH nat 0; PAIR;
                 PAIR }
-              { `fail_with 1 } } } 
+              { @fail_with 1 } } } 
       { IF_LEFT
           { # function: transfer_token
             `unpair; DIIP { `unpair; SWAP; `unpair };
@@ -71,11 +71,11 @@ code
                           DROP; DROP; DROP; 
                           DROP; DROP };
                     SWAP; PAIR;
-                    `success }
+                    @success }
                   { DROP; DROP; DROP; DROP; PAIR; SWAP; PAIR; 
-                    `fail_with 2 } } 
+                    @fail_with 2 } } 
               { DROP; DROP; DROP; PAIR; SWAP; PAIR; 
-                `fail_with 1 }}
+                @fail_with 1 }}
           { # extension return should be added here
             RIGHT unit;
             RIGHT (or (pair nat (pair nat (pair string string))) nat);

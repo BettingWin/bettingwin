@@ -54,7 +54,7 @@ code
                 PUSH nat 1; PAIR; PAIR} } } 
       { IF_LEFT
           { # function: transfer_token
-            DUP; CAR; DIP { CDR }; DIIP { DUP; CAR; DIP { CDR }; SWAP; DUP; CAR; DIP { CDR }};
+            DUP; CAR; DIP { CDR }; DIIP { DUP; CAR; DIP { CDR }; SWAP; DUP; CAR; DIP { CDR } };
             SOURCE unit unit; MANAGER;
             DUUUUP;DUUP;
             GET;

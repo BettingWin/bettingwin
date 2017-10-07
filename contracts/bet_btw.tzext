@@ -1,0 +1,48 @@
+@lib.tzlib
+@bet_token.tzlib
+
+parameter
+  (pair
+    `token_amount 
+    (or 
+      (or
+        (or 
+          unit                                                  # settle bet
+          unit)                                                 # add margin form bet maker
+        (list `odd_decimal))                                    # setup odds from bet maker
+      (or
+        (pair `odd_index (pair `odd_decimal `token_amount))     # add bet from user
+        `odd_index)))                                           # report result from user
+
+
+storage
+  (pair 
+    (or 
+      (or
+        (or 
+          unit                                                  
+          unit)                                                 
+        (list `odd_decimal))                                    
+      (or
+        (pair `odd_index (pair `odd_decimal `token_amount))     
+        `odd_index))
+    (pair
+      (pair                                                                     # basic info
+        string
+        (pair 
+          (pair timestamp timestamp)
+          (pair timestamp timestamp)))
+      (pair
+        (pair                                                                   # bet maker info
+          (pair `bet_maker `token_amount)
+          (list (pair `odd_decimal string)))
+        (pair 
+          (map `account (pair `odd_index (pair `odd_decimal `token_amount)))    # bet orders
+          (pair
+            (map `odd_index (set key)))))))                                     # report list
+
+
+return unit;
+
+code 
+  { };

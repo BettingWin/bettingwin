@@ -1,0 +1,45 @@
+parameter
+  (pair
+    nat 
+    (or 
+      (or
+        (or 
+          unit                                                  # settle bet
+          unit)                                                 # add margin form bet maker
+        (list nat))                                    # setup odds from bet maker
+      (or
+        (pair nat (pair nat nat))     # add bet from user
+        nat)))                                           # report result from user
+
+
+storage
+  (pair 
+    (or 
+      (or
+        (or 
+          unit                                                  
+          unit)                                                 
+        (list nat))                                    
+      (or
+        (pair nat (pair nat nat))     
+        nat))
+    (pair
+      (pair                                                                     # basic info
+        string
+        (pair 
+          (pair timestamp timestamp)
+          (pair timestamp timestamp)))
+      (pair
+        (pair                                                                   # bet maker info
+          (pair key nat)
+          (list (pair nat string)))
+        (pair 
+          (map (contract unit unit) (pair nat (pair nat nat)))    # bet orders
+          (pair
+            (map nat (set key)))))))                                     # report list
+
+
+return unit;
+
+code 
+  { };
