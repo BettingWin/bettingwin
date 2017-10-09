@@ -1,5 +1,5 @@
 odd_decimal = nat;;
-odd_index = nat;;
+odd_index = string;;
 token_amount = nat;;
 bet_maker = key;;
 account = (contract unit unit);;

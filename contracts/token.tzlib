@@ -12,9 +12,16 @@ UNIT; LEFT unit;
 RIGHT (or (pair nat (pair nat (pair string string))) nat); 
 PUSH nat 0; PAIR; PAIR;;
 
-compare_source_balance_with_target_amount = IFCMPGE;;
+compare_source_balance_with_target_amount|compare_approved_amount_with_target_amount = IFCMPGE;;
 
-calc_new_source_balance = SUB; ABS; SOME;;
-calc_new_target_balance = ADD; SOME;;
+calc_new_source_balance|calc_new_target_amount = SUB; ABS; SOME;;
+calc_new_target_balance|calc_new_target_balance = ADD; SOME;;
 
-update_target_balance|update_source_balance = UPDATE;;
+update_target_balance|update_source_balance|update_target_amount|update_approved_list = UPDATE;;
+
+get_approved_inner_dict|get_approved_list|get_approved_amount = GET; 
+IF_SOME;;
+
+update_approved_dict|update_approved_inner_dict = 
+UPDATE;;
+

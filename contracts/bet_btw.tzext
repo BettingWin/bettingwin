@@ -9,23 +9,25 @@ parameter
         (or 
           unit                                                  # settle bet
           unit)                                                 # add margin form bet maker
-        (list `odd_decimal))                                    # setup odds from bet maker
+        (map `odd_index `odd_decimal))                          # setup odds from bet maker
       (or
-        (pair `odd_index (pair `odd_decimal `token_amount))     # add bet from user
+        (pair `odd_index `odd_decimal)                          # add bet from user
         `odd_index)))                                           # report result from user
 
 
 storage
   (pair 
-    (or 
-      (or
-        (or 
-          unit                                                  
-          unit)                                                 
-        (list `odd_decimal))                                    
-      (or
-        (pair `odd_index (pair `odd_decimal `token_amount))     
-        `odd_index))
+    (pair
+      `token_amount
+      (or 
+        (or
+          (or 
+            unit                                                  
+            unit)                                                 
+          (map `odd_index `odd_decimal))                                    
+        (or
+          (pair `odd_index `odd_decimal)     
+          `odd_index)))
     (pair
       (pair                                                                     # basic info
         string
@@ -35,14 +37,62 @@ storage
       (pair
         (pair                                                                   # bet maker info
           (pair `bet_maker `token_amount)
-          (list (pair `odd_decimal string)))
+          (map `odd_index `odd_decimal))
         (pair 
           (map `account (pair `odd_index (pair `odd_decimal `token_amount)))    # bet orders
           (pair
-            (map `odd_index (set key)))))))                                     # report list
+            (map `odd_index (set key)))))))                                     # report map set
 
 
-return unit;
+return nat;
 
 code 
-  { };
+  { @check_if_token_amount_is_zero
+      { @get_parameter }
+      { @save_parameter_to_storage;
+        @transfer_token;
+        @check_if_fail
+          { FAIL }
+          { @get_parameter_from_storage } };
+          
+    IF_LEFT
+      { IF_LEFT
+          { IF_LEFT
+
+              { # settle bet
+                @get_contract_amount_list;
+                @save_contract_amount_list_to_storage;
+                @loop_transfer_amount;
+                `success }
+              
+              { # add margin from bet maker
+                @add_old_margin_with_new_margin;
+                @update_new_margin_in_storage;
+                `success } }
+          
+          { # setup odds from bet maker
+            @replace_odds_map;
+            `success } }
+
+      { IF_LEFT
+          
+          { # add bet from user
+            @get_current_odd_decimal_from_odd_index;
+            @check_if_curr_odd_decimal_equalto_input_odd_decimal
+              { @update_bet_order_to_bet_orders_map;
+                `success }
+              { FAIL } }
+
+          { # report result from user
+            @check_if_input_token_amount_is_less_than_1000
+              { FAIL }
+              {};
+            @get_report_map_set_from_odd_index
+              { }
+              { PUSH (set key) (Set ) };
+            @add_key_to_set;
+            @update_report_map_set;
+            `success } } } };
+
+
+
