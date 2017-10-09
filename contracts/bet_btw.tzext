@@ -12,7 +12,7 @@ parameter
         (map `odd_index `odd_decimal))                          # setup odds from bet maker
       (or
         (pair `odd_index `odd_decimal)                          # add bet from user
-        `odd_index)))                                           # report result from user
+        `odd_index)));                                          # report result from user
 
 
 storage
@@ -41,58 +41,88 @@ storage
         (pair 
           (map `account (pair `odd_index (pair `odd_decimal `token_amount)))    # bet orders
           (pair
-            (map `odd_index (set key)))))))                                     # report map set
+            (map `odd_index (set key))                                          # report map set
+            unit)))));                                    
 
 
 return nat;
 
 code 
-  { @check_if_token_amount_is_zero
-      { @get_parameter }
-      { @save_parameter_to_storage;
-        @transfer_token;
-        @check_if_fail
+  { `unpair; DUP; CAR;
+    @check_if_token_amount_is_zero
+      { }
+      { DUP; DIP { SWAP }; SWAP;
+        @save_parameter_to_storage;
+        SWAP;
+        @generate_param;
+
+        # transfer_token
+        PUSH (contract `token_param `token_return) "TZ1mQUq47nQ3eKxJzCMkUZqKewjQh9WnKP1q";
+        SWAP;
+        PUSH tez "0";
+        SWAP;
+        TRANSFER_TOKENS;
+        CAR;
+
+        @check_if_transfer_fail
           { FAIL }
-          { @get_parameter_from_storage } };
-          
+          { FAIL } };
+    
+    DROP; DUP; CADR;      
     IF_LEFT
       { IF_LEFT
           { IF_LEFT
 
               { # settle bet
-                @get_contract_amount_list;
-                @save_contract_amount_list_to_storage;
-                @loop_transfer_amount;
-                `success }
+                # [ unit : storage ]
+
+                #@get_contract_amount_list;
+                #@save_contract_amount_list_to_storage;
+                #@loop_transfer_amount;
+                #`success;
+                FAIL }
               
               { # add margin from bet maker
-                @add_old_margin_with_new_margin;
-                @update_new_margin_in_storage;
-                `success } }
+                # [ unit : storage ]
+
+                #@add_old_margin_with_new_margin;
+                #@update_new_margin_in_storage;
+                #`success
+                FAIL } }
           
           { # setup odds from bet maker
-            @replace_odds_map;
-            `success } }
+            # [ (map `odd_index `odd_decimal) : storage ]
+
+            #@replace_odds_map;
+            #`success
+            FAIL } }
 
       { IF_LEFT
           
           { # add bet from user
-            @get_current_odd_decimal_from_odd_index;
-            @check_if_curr_odd_decimal_equalto_input_odd_decimal
-              { @update_bet_order_to_bet_orders_map;
-                `success }
-              { FAIL } }
+            # [ (pair `odd_index `odd_decimal) : storage ]
+
+            #@get_current_odd_decimal_from_odd_index;
+            #@check_if_curr_odd_decimal_equalto_input_odd_decimal
+            #  { @update_bet_order_to_bet_orders_map;
+            #    `success }
+            #  { FAIL } 
+
+            FAIL }
 
           { # report result from user
-            @check_if_input_token_amount_is_less_than_1000
-              { FAIL }
-              {};
-            @get_report_map_set_from_odd_index
-              { }
-              { PUSH (set key) (Set ) };
-            @add_key_to_set;
-            @update_report_map_set;
-            `success } } } };
+            # [ `odd_index : storage ]
+
+            #@check_if_input_token_amount_is_less_than_1000
+            #  { FAIL }
+            #  {};
+            #@get_report_map_set_from_odd_index
+            #  { }
+            #  { PUSH (set key) (Set ) };
+            #@add_key_to_set;
+            #@update_report_map_set;
+            #`success
+            FAIL } } };
 
 
 

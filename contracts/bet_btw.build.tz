@@ -6,23 +6,25 @@ parameter
         (or 
           unit                                                  # settle bet
           unit)                                                 # add margin form bet maker
-        (list nat))                                    # setup odds from bet maker
+        (map string nat))                          # setup odds from bet maker
       (or
-        (pair nat (pair nat nat))     # add bet from user
-        nat)))                                           # report result from user
+        (pair string nat)                          # add bet from user
+        string)));                                          # report result from user
 
 
 storage
   (pair 
-    (or 
-      (or
-        (or 
-          unit                                                  
-          unit)                                                 
-        (list nat))                                    
-      (or
-        (pair nat (pair nat nat))     
-        nat))
+    (pair
+      nat
+      (or 
+        (or
+          (or 
+            unit                                                  
+            unit)                                                 
+          (map string nat))                                    
+        (or
+          (pair string nat)     
+          string)))
     (pair
       (pair                                                                     # basic info
         string
@@ -32,14 +34,98 @@ storage
       (pair
         (pair                                                                   # bet maker info
           (pair key nat)
-          (list (pair nat string)))
+          (map string nat))
         (pair 
-          (map (contract unit unit) (pair nat (pair nat nat)))    # bet orders
+          (map key (pair string (pair nat nat)))    # bet orders
           (pair
-            (map nat (set key)))))))                                     # report list
+            (map string (set key))                                          # report map set
+            unit)))));                                    
 
 
-return unit;
+return nat;
 
 code 
-  { };
+  { DUP; CAR; DIP { CDR }; DUP; CAR;
+    PUSH nat 0;
+    IFCMPEQ
+      { }
+      { DUP; DIP { SWAP }; SWAP;
+        SET_CAR;
+        SWAP;
+        CAR;
+        SOURCE unit unit; MANAGER;
+        DIP { PUSH key "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY"; PAIR };
+        PAIR;
+        RIGHT (pair key nat);
+        LEFT unit;
+        RIGHT (pair key nat);
+        RIGHT (or unit key);
+
+        # transfer_token
+        PUSH (contract (or (or unit key) (or (pair key nat) (or (or (pair key nat) (pair key (pair key nat))) unit))) (pair nat (or (or (pair nat (pair nat (pair string string))) nat) (or unit unit)))) "TZ1mQUq47nQ3eKxJzCMkUZqKewjQh9WnKP1q";
+        SWAP;
+        PUSH tez "0";
+        SWAP;
+        TRANSFER_TOKENS;
+        CAR;
+
+        PUSH nat 0;
+        IFCMPEQ
+          { FAIL }
+          { FAIL } };
+    
+    DROP; DUP; CADR;      
+    IF_LEFT
+      { IF_LEFT
+          { IF_LEFT
+
+              { # settle bet
+                # [ unit : storage ]
+
+                #@get_contract_amount_list;
+                #@save_contract_amount_list_to_storage;
+                #@loop_transfer_amount;
+                #`success;
+                FAIL }
+              
+              { # add margin from bet maker
+                # [ unit : storage ]
+
+                #@add_old_margin_with_new_margin;
+                #@update_new_margin_in_storage;
+                #`success
+                FAIL } }
+          
+          { # setup odds from bet maker
+            # [ (map string nat) : storage ]
+
+            #@replace_odds_map;
+            #`success
+            FAIL } }
+
+      { IF_LEFT
+          
+          { # add bet from user
+            # [ (pair string nat) : storage ]
+
+            #@get_current_odd_decimal_from_odd_index;
+            #@check_if_curr_odd_decimal_equalto_input_odd_decimal
+            #  { @update_bet_order_to_bet_orders_map;
+            #    `success }
+            #  { FAIL } 
+
+            FAIL }
+
+          { # report result from user
+            # [ string : storage ]
+
+            #@check_if_input_token_amount_is_less_than_1000
+            #  { FAIL }
+            #  {};
+            #@get_report_map_set_from_odd_index
+            #  { }
+            #  { PUSH (set key) (Set ) };
+            #@add_key_to_set;
+            #@update_report_map_set;
+            #`success
+            FAIL } } };
