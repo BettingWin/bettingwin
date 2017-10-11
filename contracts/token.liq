@@ -6,6 +6,7 @@ type parameter =
 | Transfer_token of (key * nat)
 | Approve of (key * nat)
 | Transfer_token_from_approve_dict of (key * key * nat)
+| Allowance of (key * key)
 
 type storage = {
   approve_dict : (key, (key, nat) map) map;
@@ -43,7 +44,7 @@ let%entry main (parameter : parameter) (storage : storage) [%return : nat * retu
     
     | Balance from -> 
       let result = get_origin_balance from in
-      ((1p, Balance_return result), storage)
+      ((0p, Balance_return result), storage)
     
     | Transfer_token x -> 
       let target = x.(0) in
@@ -83,7 +84,7 @@ let%entry main (parameter : parameter) (storage : storage) [%return : nat * retu
       let source = x.(0) in
       let target = x.(1) in
       let amount = x.(2) in 
-      match Map.find source storage.approve_dict with
+      (match Map.find source storage.approve_dict with
         | None -> ((1p, General_return), storage)
         | Some approve_dict_lst ->
           match Map.find target approve_dict_lst with
@@ -99,5 +100,15 @@ let%entry main (parameter : parameter) (storage : storage) [%return : nat * retu
               let new_approve_dict_lst = Map.update target (Some new_target_amount) approve_dict_lst in
               let new_approve_dict = Map.update source (Some new_approve_dict_lst) storage1.approve_dict in
               let storage2 = storage.approve_dict <- new_approve_dict in
-              ((0p, General_return), storage2)
+              ((0p, General_return), storage2))
+
+    | Allowance x ->
+      let source = x.(0) in
+      let target = x.(1) in
+      match Map.find source storage.approve_dict with
+      | None -> ((0p, Balance_return 0p), storage)
+      | Some x ->
+        match Map.find target x with
+        | None -> ((0p, Balance_return 0p), storage)
+        | Some x -> ((0p, Balance_return x), storage)
 
