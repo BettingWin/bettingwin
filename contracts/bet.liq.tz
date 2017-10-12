@@ -23,16 +23,34 @@ parameter
     );
 storage
   (pair
-    (contract
+    (or
+      nat
       (or
-        unit
+        (map
+          nat
+          nat
+          )
         (or
-          key
-          (or
+          (pair
+            nat
             (pair
-              key
+              nat
               nat
               )
+            )
+          (or
+            nat
+            unit
+            )
+          )
+        )
+      )
+    (pair
+      (contract
+        (or
+          unit
+          (or
+            key
             (or
               (pair
                 key
@@ -41,96 +59,108 @@ storage
               (or
                 (pair
                   key
+                  nat
+                  )
+                (or
                   (pair
                     key
-                    nat
+                    (pair
+                      key
+                      nat
+                      )
                     )
-                  )
-                (pair
-                  key
-                  key
+                  (pair
+                    key
+                    key
+                    )
                   )
                 )
               )
             )
           )
+        (pair
+          nat
+          (or
+            unit
+            (or
+              (pair
+                nat
+                (pair
+                  nat
+                  (pair
+                    string
+                    string
+                    )
+                  )
+                )
+              nat
+              )
+            )
+          )
         )
       (pair
-        nat
         (or
           unit
           (or
+            string
+            unit
+            )
+          )
+        (pair
+          (pair
+            string
             (pair
-              nat
+              timestamp
               (pair
-                nat
                 (pair
-                  string
-                  string
+                  timestamp
+                  timestamp
+                  )
+                (pair
+                  (pair
+                    timestamp
+                    timestamp
+                    )
+                  (list
+                    string
+                    )
                   )
                 )
               )
-            nat
             )
-          )
-        )
-      )
-    (pair
-      (or
-        unit
-        (or
-          string
-          unit
-          )
-        )
-      (pair
-        (pair
-          string
           (pair
-            timestamp
             (pair
-              (pair
-                timestamp
-                timestamp
+              (option
+                key
                 )
               (pair
-                (pair
-                  timestamp
-                  timestamp
-                  )
                 (list
-                  string
+                  nat
+                  )
+                (map
+                  nat
+                  nat
                   )
                 )
               )
-            )
-          )
-        (pair
-          (pair
-            key
             (pair
-              nat
               (map
                 nat
-                nat
-                )
-              )
-            )
-          (pair
-            (map
-              key
-              (pair
-                nat
-                (pair
-                  nat
-                  nat
+                (list
+                  (pair
+                    key
+                    (pair
+                      nat
+                      nat
+                      )
+                    )
                   )
                 )
-              )
-            (map
-              nat
-              (set
-                key
+              (map
+                nat
+                (set
+                  key
+                  )
                 )
               )
             )
@@ -141,16 +171,1050 @@ storage
 return
   (or
     unit
-    string
+    nat
     );
 code
   {
-    CDR ;
-    PUSH
-      unit
-      Unit ;
-    LEFT
-      string
+    DUP ;
+    DIP
+      {
+        CDR ;
+      }
       ;
-    PAIR ;
+    CAR ;
+    SELF ;
+    MANAGER ;
+    SOURCE
+      unit
+      unit
+      ;
+    MANAGER ;
+    DUUUP ;
+    IF_LEFT
+      {
+        DUUUUUP ;
+        CDDDDAR ;
+        CAR ;
+        IF_NONE
+          {
+            DUUUUUP ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUP ;
+            CDDDDAR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUUUP ;
+            CDDDDAR ;
+            CDAR ;
+            DUUUUUUUUUP ;
+            CONS ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUP ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUUUUUUP ;
+            CDDDDAR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUUUUUUUUP ;
+            CDDDDAR ;
+            CDAR ;
+            DUUUUUUUUUUUUUUP ;
+            CONS ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            CDDDDAR ;
+            CDR ;
+            DUUUUUUUUP ;
+            SOME ;
+            PAIR ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            DUP ;
+            SWAP ;
+            CDAR ;
+            PUSH
+              tez
+              "0" ;
+            DUUUUP ;
+            DIIIIP
+              {
+                DROP ;
+              }
+              ;
+            DIIIIIIP
+              {
+                DROP ;
+                DROP ;
+              }
+              ;
+            DUUUUUUP ;
+            DIIIIIIP
+              {
+                DROP ;
+              }
+              ;
+            PAIR ;
+            DUUUUUP ;
+            DIIIIIP
+              {
+                DROP ;
+              }
+              ;
+            PAIR ;
+            LEFT
+              (pair
+                key
+                key
+                )
+              ;
+            RIGHT
+              (pair
+                key
+                nat
+                )
+              ;
+            RIGHT
+              (pair
+                key
+                nat
+                )
+              ;
+            RIGHT
+              key
+              ;
+            RIGHT
+              unit
+              ;
+            TRANSFER_TOKENS ;
+            PUSH
+              nat
+              0 ;
+            DUUP ;
+            CAR ;
+            COMPARE ;
+            EQ ;
+            IF
+              {
+                DUUP ;
+                PUSH
+                  unit
+                  Unit ;
+                LEFT
+                  nat
+                  ;
+                PAIR ;
+              }
+              {
+                DUUP ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUP ;
+                CDDDDAR ;
+                DUP ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUUUUP ;
+                CDDDDAR ;
+                CDAR ;
+                IF_CONS
+                  {
+                    DROP ;
+                  }
+                  {
+                    PUSH
+                      (list
+                        nat
+                        )
+                      (List
+                        ) ;
+                  }
+                  ;
+                DIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUP ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUUUUUUP ;
+                CDDDDAR ;
+                DUP ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUUUUUUUUUP ;
+                CDDDDAR ;
+                CDAR ;
+                IF_CONS
+                  {
+                    DROP ;
+                  }
+                  {
+                    PUSH
+                      (list
+                        nat
+                        )
+                      (List
+                        ) ;
+                  }
+                  ;
+                DIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                CDDDDAR ;
+                CDR ;
+                PUSH
+                  (option
+                    key
+                    )
+                  None ;
+                PAIR ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                PUSH
+                  nat
+                  0 ;
+                RIGHT
+                  unit
+                  ;
+                PAIR ;
+              }
+              ;
+            DIP
+              {
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+              }
+              ;
+          }
+          {
+            DUUUP ;
+            SWAP ;
+            COMPARE ;
+            EQ ;
+            IF
+              {
+                DUUUUUP ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUUUUP ;
+                CDDDDAR ;
+                DUP ;
+                CAR ;
+                SWAP ;
+                CDR ;
+                CDR ;
+                DUUUUUUUUUUUUP ;
+                CDDDDAR ;
+                CDAR ;
+                DUUUUUUUUUP ;
+                CONS ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                SWAP ;
+                PAIR ;
+                DUP ;
+                SWAP ;
+                CDAR ;
+                PUSH
+                  tez
+                  "0" ;
+                DUUUUP ;
+                DIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                DIIIIIIP
+                  {
+                    DROP ;
+                    DROP ;
+                  }
+                  ;
+                DUUUUUUP ;
+                DIIIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                DUUUUUP ;
+                DIIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                LEFT
+                  (pair
+                    key
+                    key
+                    )
+                  ;
+                RIGHT
+                  (pair
+                    key
+                    nat
+                    )
+                  ;
+                RIGHT
+                  (pair
+                    key
+                    nat
+                    )
+                  ;
+                RIGHT
+                  key
+                  ;
+                RIGHT
+                  unit
+                  ;
+                TRANSFER_TOKENS ;
+                PUSH
+                  nat
+                  0 ;
+                DUUP ;
+                CAR ;
+                COMPARE ;
+                EQ ;
+                IF
+                  {
+                    DUUP ;
+                    PUSH
+                      unit
+                      Unit ;
+                    LEFT
+                      nat
+                      ;
+                    PAIR ;
+                  }
+                  {
+                    DUUP ;
+                    DUP ;
+                    CAR ;
+                    SWAP ;
+                    CDR ;
+                    DUP ;
+                    CAR ;
+                    SWAP ;
+                    CDR ;
+                    DUP ;
+                    CAR ;
+                    SWAP ;
+                    CDR ;
+                    DUP ;
+                    CAR ;
+                    SWAP ;
+                    CDR ;
+                    CDR ;
+                    DUUUUUUUP ;
+                    CDDDDAR ;
+                    DUP ;
+                    DUP ;
+                    CAR ;
+                    SWAP ;
+                    CDR ;
+                    CDR ;
+                    DUUUUUUUUUUP ;
+                    CDDDDAR ;
+                    CDAR ;
+                    IF_CONS
+                      {
+                        DROP ;
+                      }
+                      {
+                        PUSH
+                          (list
+                            nat
+                            )
+                          (List
+                            ) ;
+                      }
+                      ;
+                    DIIIP
+                      {
+                        DROP ;
+                      }
+                      ;
+                    PAIR ;
+                    SWAP ;
+                    PAIR ;
+                    PAIR ;
+                    SWAP ;
+                    PAIR ;
+                    SWAP ;
+                    PAIR ;
+                    SWAP ;
+                    PAIR ;
+                    SWAP ;
+                    PAIR ;
+                    PUSH
+                      nat
+                      0 ;
+                    RIGHT
+                      unit
+                      ;
+                    PAIR ;
+                  }
+                  ;
+                DIP
+                  {
+                    DROP ;
+                    DROP ;
+                  }
+                  ;
+              }
+              {
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+                PUSH
+                  nat
+                  1 ;
+                RIGHT
+                  unit
+                  ;
+                PAIR ;
+              }
+              ;
+          }
+          ;
+      }
+      {
+        IF_LEFT
+          {
+            DUUUUUP ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            CDR ;
+            DUUUUUUUUUUP ;
+            CDDDDAR ;
+            DUP ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
+            DROP ;
+            PUSH
+              nat
+              1 ;
+            DUUUUUUUUUUUUUUP ;
+            CDDDAR ;
+            CDDDDR ;
+            SIZE ;
+            SUB ;
+            DUUUUUUUUUUP ;
+            PAIR ;
+            PUSH
+              bool
+              True ;
+            LOOP
+              {
+                DUP ;
+                CAR ;
+                DUUP ;
+                CDR ;
+                ABS ;
+                DUUP ;
+                DUUP ;
+                GET ;
+                IF_NONE
+                  {
+                    DUUP ;
+                    PUSH
+                      (option
+                        nat
+                        )
+                      (Some
+                        1
+                        ) ;
+                    DUUUP ;
+                    UPDATE ;
+                  }
+                  {
+                    DROP ;
+                    DUUP ;
+                  }
+                  ;
+                PUSH
+                  nat
+                  0 ;
+                DUUUP ;
+                COMPARE ;
+                EQ ;
+                IF
+                  {
+                    PUSH
+                      int
+                      0 ;
+                    DUUP ;
+                    PAIR ;
+                    PUSH
+                      bool
+                      False ;
+                    PAIR ;
+                  }
+                  {
+                    PUSH
+                      nat
+                      1 ;
+                    DUUUP ;
+                    SUB ;
+                    DUUP ;
+                    PAIR ;
+                    PUSH
+                      bool
+                      True ;
+                    PAIR ;
+                  }
+                  ;
+                DIP
+                  {
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                  }
+                  ;
+                DUP ;
+                CAR ;
+                DIP
+                  {
+                    CDR ;
+                  }
+                  ;
+              }
+              ;
+            DIIIP
+              {
+                DROP ;
+              }
+              ;
+            DIIIIIIIIP
+              {
+                DROP ;
+                DROP ;
+                DROP ;
+                DROP ;
+              }
+              ;
+            CAR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            SWAP ;
+            PAIR ;
+            PUSH
+              unit
+              Unit ;
+            LEFT
+              nat
+              ;
+            PAIR ;
+          }
+          {
+            IF_LEFT
+              {
+                DUUUUUP ;
+                CDR ;
+                DUUUUUP ;
+                PAIR ;
+                DUP ;
+                SWAP ;
+                CDAR ;
+                PUSH
+                  tez
+                  "0" ;
+                DUUUUP ;
+                DIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                DIIIIIIP
+                  {
+                    DROP ;
+                    DROP ;
+                  }
+                  ;
+                CAR ;
+                DUUUUUUP ;
+                DIIIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                DUUUUUP ;
+                DIIIIIP
+                  {
+                    DROP ;
+                  }
+                  ;
+                PAIR ;
+                LEFT
+                  (pair
+                    key
+                    key
+                    )
+                  ;
+                RIGHT
+                  (pair
+                    key
+                    nat
+                    )
+                  ;
+                RIGHT
+                  (pair
+                    key
+                    nat
+                    )
+                  ;
+                RIGHT
+                  key
+                  ;
+                RIGHT
+                  unit
+                  ;
+                TRANSFER_TOKENS ;
+                PUSH
+                  nat
+                  0 ;
+                DUUP ;
+                CAR ;
+                COMPARE ;
+                EQ ;
+                IF
+                  {
+                    DUUP ;
+                    CAR ;
+                    IF_LEFT
+                      {
+                        DROP ;
+                        DUUP ;
+                        PUSH
+                          nat
+                          2 ;
+                        RIGHT
+                          unit
+                          ;
+                        PAIR ;
+                      }
+                      {
+                        IF_LEFT
+                          {
+                            DROP ;
+                            DUUP ;
+                            PUSH
+                              nat
+                              2 ;
+                            RIGHT
+                              unit
+                              ;
+                            PAIR ;
+                          }
+                          {
+                            IF_LEFT
+                              {
+                                DUP ;
+                                CDAR ;
+                                DUUUUP ;
+                                DUP ;
+                                CAR ;
+                                SWAP ;
+                                CDR ;
+                                DUP ;
+                                CAR ;
+                                SWAP ;
+                                CDR ;
+                                DUP ;
+                                CAR ;
+                                SWAP ;
+                                CDR ;
+                                DUP ;
+                                CAR ;
+                                SWAP ;
+                                CDR ;
+                                DUP ;
+                                CAR ;
+                                SWAP ;
+                                CDR ;
+                                CDR ;
+                                DUUUUUUUUUUP ;
+                                CDDDDDAR ;
+                                DUUUUUUUUUUUP ;
+                                CDDDDDAR ;
+                                DUUUUUUUUUP ;
+                                GET ;
+                                IF_NONE
+                                  {
+                                    PUSH
+                                      (list
+                                        (pair
+                                          key
+                                          (pair
+                                            nat
+                                            nat
+                                            )
+                                          )
+                                        )
+                                      (List
+                                        ) ;
+                                  }
+                                  {}
+                                  ;
+                                DUUUUUUUUUUP ;
+                                CAR ;
+                                DUUUUUUUUUUUP ;
+                                DIIIIIIIIIIIP
+                                  {
+                                    DROP ;
+                                  }
+                                  ;
+                                CDDR ;
+                                PAIR ;
+                                SOURCE
+                                  unit
+                                  unit
+                                  ;
+                                MANAGER ;
+                                PAIR ;
+                                CONS ;
+                                SOME ;
+                                DUUUUUUUUUP ;
+                                DIIIIIIIIIP
+                                  {
+                                    DROP ;
+                                  }
+                                  ;
+                                UPDATE ;
+                                PAIR ;
+                                SWAP ;
+                                PAIR ;
+                                SWAP ;
+                                PAIR ;
+                                SWAP ;
+                                PAIR ;
+                                SWAP ;
+                                PAIR ;
+                                SWAP ;
+                                PAIR ;
+                                PUSH
+                                  unit
+                                  Unit ;
+                                LEFT
+                                  nat
+                                  ;
+                                PAIR ;
+                              }
+                              {
+                                IF_LEFT
+                                  {
+                                    DROP ;
+                                    DUUP ;
+                                    PUSH
+                                      nat
+                                      2 ;
+                                    RIGHT
+                                      unit
+                                      ;
+                                    PAIR ;
+                                  }
+                                  {
+                                    DROP ;
+                                    DUUP ;
+                                    PUSH
+                                      nat
+                                      2 ;
+                                    RIGHT
+                                      unit
+                                      ;
+                                    PAIR ;
+                                  }
+                                  ;
+                              }
+                              ;
+                          }
+                          ;
+                      }
+                      ;
+                  }
+                  {
+                    DUUP ;
+                    PUSH
+                      nat
+                      0 ;
+                    RIGHT
+                      unit
+                      ;
+                    PAIR ;
+                  }
+                  ;
+                DIP
+                  {
+                    DROP ;
+                    DROP ;
+                  }
+                  ;
+              }
+              {
+                IF_LEFT
+                  {
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                    DUP ;
+                    PUSH
+                      unit
+                      Unit ;
+                    LEFT
+                      nat
+                      ;
+                    PAIR ;
+                  }
+                  {
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                    DROP ;
+                    DUP ;
+                    PUSH
+                      unit
+                      Unit ;
+                    LEFT
+                      nat
+                      ;
+                    PAIR ;
+                  }
+                  ;
+              }
+              ;
+          }
+          ;
+      }
+      ;
   }

@@ -1,6 +1,6 @@
 [%%version 0.1]
 
-type parameter = 
+type parameter_t = 
 | Token_info
 | Balance of key
 | Transfer_token of (key * nat)
@@ -8,7 +8,7 @@ type parameter =
 | Transfer_token_from_approve_dict of (key * key * nat)
 | Allowance of (key * key)
 
-type storage = {
+type storage_t = {
   approve_dict : (key, (key, nat) map) map;
   balance : (key, nat) map;
   total_supply : nat;
@@ -22,6 +22,9 @@ type return_variant =
 | Token_info_return of nat * nat * string * string
 | Balance_return of nat
 
+type return_t = nat * return_variant
+
+
 
 let get_balance = fun (balance_map : (key, nat) map) -> fun (k : key) ->
   match Map.find k balance_map with
@@ -34,7 +37,7 @@ The nat of return represents:
   1: balance insufficient
  *)  
 
-let%entry main (parameter : parameter) (storage : storage) [%return : nat * return_variant] =
+let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return_t] =
   let get_origin_balance = get_balance storage.balance in
   let source = Contract.manager (Source : (unit, unit) contract) in
   let source_balance = get_origin_balance source in
