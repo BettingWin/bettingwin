@@ -2,28 +2,28 @@ parameter
   (or
     unit
     (or
-      key
+      key_hash
       (or
         (pair
-          key
+          key_hash
           nat
           )
         (or
           (pair
-            key
+            key_hash
             nat
             )
           (or
             (pair
-              key
+              key_hash
               (pair
-                key
+                key_hash
                 nat
                 )
               )
             (pair
-              key
-              key
+              key_hash
+              key_hash
               )
             )
           )
@@ -33,15 +33,15 @@ parameter
 storage
   (pair
     (map
-      key
+      key_hash
       (map
-        key
+        key_hash
         nat
         )
       )
     (pair
       (map
-        key
+        key_hash
         nat
         )
       (pair
@@ -87,31 +87,31 @@ code
     CAR ;
     LAMBDA
       (map
-        key
+        key_hash
         nat
         )
       (pair
         (lambda
           (pair
-            key
+            key_hash
             (map
-              key
+              key_hash
               nat
               )
             )
           nat
           )
         (map
-          key
+          key_hash
           nat
           )
         )
       {
         LAMBDA
           (pair
-            key
+            key_hash
             (map
-              key
+              key_hash
               nat
               )
             )
@@ -405,7 +405,7 @@ code
                           {
                             PUSH
                               (map
-                                key
+                                key_hash
                                 nat
                                 )
                               (Map

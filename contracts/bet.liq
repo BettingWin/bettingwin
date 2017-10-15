@@ -2,11 +2,11 @@
 
 type token_p = 
 | Token_info
-| Balance of key
-| Transfer_token of (key * nat)
-| Approve of (key * nat)
-| Transfer_token_from_approve_dict of (key * key * nat)
-| Allowance of (key * key)
+| Balance of key_hash
+| Transfer_token of (key_hash * nat)
+| Approve of (key_hash * nat)
+| Transfer_token_from_approve_dict of (key_hash * key_hash * nat)
+| Allowance of (key_hash * key_hash)
 
 type token_r_variant =
 | General_return
@@ -42,7 +42,7 @@ type info = {
 }
 
 type bookmaker = {
-  key : key option;
+  key : key_hash option;
   margin : token;
   odds : (odd_index, odd_decimal) map;
 }
@@ -56,9 +56,9 @@ type storage_t = {
 
   all_token_amount : token;
   all_bets_token_amount: (odd_index, token) map;
-  orders : (odd_index, (key * odd_decimal * token) list) map;
-  reports : (key, odd_index) map;
-  distribution: (key, token) map;
+  orders : (odd_index, (key_hash * odd_decimal * token) list) map;
+  reports : (key_hash, odd_index) map;
+  distribution: (key_hash, token) map;
 }
 
 type return_t = 
@@ -98,19 +98,21 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
             (Right (Fail 1p, storage) : (nat, return_t * storage_t) variant))
 
       | Setup_odds odds_mod -> 
-        let i = List.size storage.info.odds_lst in
         let result = Loop.loop (fun x -> 
           let odds_mod = x.(0) in
-          let i = abs x.(1) in
+          let i = x.(1) in
+          let odds_lst = x.(2) in
           let odds_mod' = match Map.find i odds_mod with
             | None -> Map.update i (Some 1p) odds_mod
             | Some z -> odds_mod
           in
-          if i = 0p then
-            (false, (odds_mod', 0))
-          else
-            (true, (odds_mod', i - 1p))
-          ) (odds_mod, i - 1p)
+          match odds_lst with
+          | [] -> 
+            (false, (odds_mod', i, odds_lst))
+          | z :: tl ->
+            (true, (odds_mod', i + 1p, tl))
+
+        ) (odds_mod, 0p, storage.info.odds_lst)
         in
         (Right (Success, storage.bookmaker.odds <- result.(0)) : (nat, return_t * storage_t) variant)
 
@@ -129,7 +131,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
         in
         let bet_tokens = Map.reduce odds_reduce storage.all_bets_token_amount 0p in
         let all_margin = storage.bookmaker.margin + bet_tokens in 
-        let orders_reduce (x : ((key * odd_decimal * token) * token)) =
+        let orders_reduce (x : ((key_hash * odd_decimal * token) * token)) =
           let odd_decimal = x.(0).(1) in
           let token = x.(0).(2) in
           let acc_token = x.(1) in
@@ -159,7 +161,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
 
       | Settle -> 
         let storage = storage.state <- Settled in
-        let votes_reduce (x : (key * odd_index) * (odd_index, nat) map) = 
+        let votes_reduce (x : (key_hash * odd_index) * (odd_index, nat) map) = 
           let odd_index = x.(0).(1) in
           let map = x.(1) in
           let prev_n = match Map.find odd_index map with | None -> 0p | Some n -> n in
@@ -178,9 +180,9 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
         in
         let correct_odd = Map.reduce correct_reduce odds_votes (0p, 0p) in
         let correct_odd_index = correct_odd.(0) in
-        let winning_orders = match Map.find correct_odd_index storage.orders with | None -> ([] : (key * odd_decimal * token) list) | Some x -> x in
+        let winning_orders = match Map.find correct_odd_index storage.orders with | None -> ([] : (key_hash * odd_decimal * token) list) | Some x -> x in
         (* save tokens for winners in distribution *)
-        let orders_reduce (x : ((key * odd_decimal * token) * (token * (key, token) map))) =
+        let orders_reduce (x : ((key_hash * odd_decimal * token) * (token * (key_hash, token) map))) =
           let key = x.(0).(0) in
           let odd_decimal = x.(0).(1) in
           let token = x.(0).(2) in
@@ -192,11 +194,11 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
           in 
           (all_token + token, Map.update key (Some result) map)
         in
-        let orders_reduce_result = List.reduce orders_reduce winning_orders (0p, (Map : (key, token) map)) in
+        let orders_reduce_result = List.reduce orders_reduce winning_orders (0p, (Map : (key_hash, token) map)) in
         let all_token_left = abs (storage.all_token_amount - orders_reduce_result.(0)) in
         let storage = storage.distribution <- orders_reduce_result.(1) in
         (* save tokens for reporters in distribution *)
-        let reports_reduce (x : ((key * odd_index) * (token * (key, token) map))) =
+        let reports_reduce (x : ((key_hash * odd_index) * (token * (key_hash, token) map))) =
           let key = x.(0).(0) in
           let all_token_left = x.(1).(0) in
           let distribution = x.(1).(1) in
@@ -248,7 +250,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
           let odd_index = x.(1) in
           let odd_decimal = x.(2) in
           let orders_lst = match Map.find odd_index storage.orders with
-            | None -> ([] : (key * odd_decimal * token) list)
+            | None -> ([] : (key_hash * odd_decimal * token) list)
             | Some x -> x
           in
           let storage = storage.orders <- Map.update odd_index (Some ((source, odd_decimal, token) :: orders_lst)) storage.orders in

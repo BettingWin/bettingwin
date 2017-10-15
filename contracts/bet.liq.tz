@@ -50,28 +50,28 @@ storage
         (or
           unit
           (or
-            key
+            key_hash
             (or
               (pair
-                key
+                key_hash
                 nat
                 )
               (or
                 (pair
-                  key
+                  key_hash
                   nat
                   )
                 (or
                   (pair
-                    key
+                    key_hash
                     (pair
-                      key
+                      key_hash
                       nat
                       )
                     )
                   (pair
-                    key
-                    key
+                    key_hash
+                    key_hash
                     )
                   )
                 )
@@ -131,7 +131,7 @@ storage
           (pair
             (pair
               (option
-                key
+                key_hash
                 )
               (pair
                 nat
@@ -153,7 +153,7 @@ storage
                     nat
                     (list
                       (pair
-                        key
+                        key_hash
                         (pair
                           nat
                           nat
@@ -163,11 +163,11 @@ storage
                     )
                   (pair
                     (map
-                      key
+                      key_hash
                       nat
                       )
                     (map
-                      key
+                      key_hash
                       nat
                       )
                     )
@@ -245,28 +245,28 @@ code
                           (or
                             unit
                             (or
-                              key
+                              key_hash
                               (or
                                 (pair
-                                  key
+                                  key_hash
                                   nat
                                   )
                                 (or
                                   (pair
-                                    key
+                                    key_hash
                                     nat
                                     )
                                   (or
                                     (pair
-                                      key
+                                      key_hash
                                       (pair
-                                        key
+                                        key_hash
                                         nat
                                         )
                                       )
                                     (pair
-                                      key
-                                      key
+                                      key_hash
+                                      key_hash
                                       )
                                     )
                                   )
@@ -326,7 +326,7 @@ code
                             (pair
                               (pair
                                 (option
-                                  key
+                                  key_hash
                                   )
                                 (pair
                                   nat
@@ -348,7 +348,7 @@ code
                                       nat
                                       (list
                                         (pair
-                                          key
+                                          key_hash
                                           (pair
                                             nat
                                             nat
@@ -358,11 +358,11 @@ code
                                       )
                                     (pair
                                       (map
-                                        key
+                                        key_hash
                                         nat
                                         )
                                       (map
-                                        key
+                                        key_hash
                                         nat
                                         )
                                       )
@@ -419,28 +419,28 @@ code
                               (or
                                 unit
                                 (or
-                                  key
+                                  key_hash
                                   (or
                                     (pair
-                                      key
+                                      key_hash
                                       nat
                                       )
                                     (or
                                       (pair
-                                        key
+                                        key_hash
                                         nat
                                         )
                                       (or
                                         (pair
-                                          key
+                                          key_hash
                                           (pair
-                                            key
+                                            key_hash
                                             nat
                                             )
                                           )
                                         (pair
-                                          key
-                                          key
+                                          key_hash
+                                          key_hash
                                           )
                                         )
                                       )
@@ -500,7 +500,7 @@ code
                                 (pair
                                   (pair
                                     (option
-                                      key
+                                      key_hash
                                       )
                                     (pair
                                       nat
@@ -522,7 +522,7 @@ code
                                           nat
                                           (list
                                             (pair
-                                              key
+                                              key_hash
                                               (pair
                                                 nat
                                                 nat
@@ -532,11 +532,11 @@ code
                                           )
                                         (pair
                                           (map
-                                            key
+                                            key_hash
                                             nat
                                             )
                                           (map
-                                            key
+                                            key_hash
                                             nat
                                             )
                                           )
@@ -610,14 +610,13 @@ code
                 CAR ;
                 SWAP ;
                 DROP ;
-                PUSH
-                  nat
-                  1 ;
-                DUUUUUUUUUUUUUUP ;
+                DUUUUUUUUUUUUUP ;
                 CDDDAR ;
                 CDDDDR ;
-                SIZE ;
-                SUB ;
+                PUSH
+                  nat
+                  0 ;
+                PAIR ;
                 DUUUUUUUUUUP ;
                 PAIR ;
                 PUSH
@@ -628,14 +627,15 @@ code
                     DUP ;
                     CAR ;
                     DUUP ;
-                    CDR ;
-                    ABS ;
-                    DUUP ;
-                    DUUP ;
+                    CDAR ;
+                    DUUUP ;
+                    CDDR ;
+                    DUUUP ;
+                    DUUUP ;
                     GET ;
                     IF_NONE
                       {
-                        DUUP ;
+                        DUUUP ;
                         PUSH
                           (option
                             nat
@@ -643,38 +643,24 @@ code
                           (Some
                             1
                             ) ;
-                        DUUUP ;
+                        DUUUUP ;
                         UPDATE ;
                       }
                       {
                         DROP ;
-                        DUUP ;
+                        DUUUP ;
                       }
                       ;
-                    PUSH
-                      nat
-                      0 ;
-                    DUUUP ;
-                    COMPARE ;
-                    EQ ;
-                    IF
+                    DUUP ;
+                    IF_CONS
                       {
-                        PUSH
-                          int
-                          0 ;
-                        DUUP ;
-                        PAIR ;
-                        PUSH
-                          bool
-                          False ;
-                        PAIR ;
-                      }
-                      {
+                        DROP ;
                         PUSH
                           nat
                           1 ;
-                        DUUUP ;
-                        SUB ;
+                        DUUUUUP ;
+                        ADD ;
+                        PAIR ;
                         DUUP ;
                         PAIR ;
                         PUSH
@@ -682,9 +668,21 @@ code
                           True ;
                         PAIR ;
                       }
+                      {
+                        DUUP ;
+                        DUUUUP ;
+                        PAIR ;
+                        DUUP ;
+                        PAIR ;
+                        PUSH
+                          bool
+                          False ;
+                        PAIR ;
+                      }
                       ;
                     DIP
                       {
+                        DROP ;
                         DROP ;
                         DROP ;
                         DROP ;
@@ -803,7 +801,7 @@ code
                         PUSH
                           (list
                             (pair
-                              key
+                              key_hash
                               (pair
                                 nat
                                 nat
@@ -831,7 +829,7 @@ code
                     LAMBDA
                       (pair
                         (pair
-                          key
+                          key_hash
                           (pair
                             nat
                             nat
@@ -1058,28 +1056,28 @@ code
                                   (or
                                     unit
                                     (or
-                                      key
+                                      key_hash
                                       (or
                                         (pair
-                                          key
+                                          key_hash
                                           nat
                                           )
                                         (or
                                           (pair
-                                            key
+                                            key_hash
                                             nat
                                             )
                                           (or
                                             (pair
-                                              key
+                                              key_hash
                                               (pair
-                                                key
+                                                key_hash
                                                 nat
                                                 )
                                               )
                                             (pair
-                                              key
-                                              key
+                                              key_hash
+                                              key_hash
                                               )
                                             )
                                           )
@@ -1139,7 +1137,7 @@ code
                                     (pair
                                       (pair
                                         (option
-                                          key
+                                          key_hash
                                           )
                                         (pair
                                           nat
@@ -1161,7 +1159,7 @@ code
                                               nat
                                               (list
                                                 (pair
-                                                  key
+                                                  key_hash
                                                   (pair
                                                     nat
                                                     nat
@@ -1171,11 +1169,11 @@ code
                                               )
                                             (pair
                                               (map
-                                                key
+                                                key_hash
                                                 nat
                                                 )
                                               (map
-                                                key
+                                                key_hash
                                                 nat
                                                 )
                                               )
@@ -1260,28 +1258,28 @@ code
                                       (or
                                         unit
                                         (or
-                                          key
+                                          key_hash
                                           (or
                                             (pair
-                                              key
+                                              key_hash
                                               nat
                                               )
                                             (or
                                               (pair
-                                                key
+                                                key_hash
                                                 nat
                                                 )
                                               (or
                                                 (pair
-                                                  key
+                                                  key_hash
                                                   (pair
-                                                    key
+                                                    key_hash
                                                     nat
                                                     )
                                                   )
                                                 (pair
-                                                  key
-                                                  key
+                                                  key_hash
+                                                  key_hash
                                                   )
                                                 )
                                               )
@@ -1341,7 +1339,7 @@ code
                                         (pair
                                           (pair
                                             (option
-                                              key
+                                              key_hash
                                               )
                                             (pair
                                               nat
@@ -1363,7 +1361,7 @@ code
                                                   nat
                                                   (list
                                                     (pair
-                                                      key
+                                                      key_hash
                                                       (pair
                                                         nat
                                                         nat
@@ -1373,11 +1371,11 @@ code
                                                   )
                                                 (pair
                                                   (map
-                                                    key
+                                                    key_hash
                                                     nat
                                                     )
                                                   (map
-                                                    key
+                                                    key_hash
                                                     nat
                                                     )
                                                   )
@@ -1441,7 +1439,7 @@ code
                         LAMBDA
                           (pair
                             (pair
-                              key
+                              key_hash
                               nat
                               )
                             (map
@@ -1550,7 +1548,7 @@ code
                           (pair
                             nat
                             (map
-                              key
+                              key_hash
                               nat
                               )
                             )
@@ -1588,7 +1586,7 @@ code
                             PUSH
                               (list
                                 (pair
-                                  key
+                                  key_hash
                                   (pair
                                     nat
                                     nat
@@ -1603,7 +1601,7 @@ code
                         LAMBDA
                           (pair
                             (pair
-                              key
+                              key_hash
                               (pair
                                 nat
                                 nat
@@ -1612,7 +1610,7 @@ code
                             (pair
                               nat
                               (map
-                                key
+                                key_hash
                                 nat
                                 )
                               )
@@ -1620,7 +1618,7 @@ code
                           (pair
                             nat
                             (map
-                              key
+                              key_hash
                               nat
                               )
                             )
@@ -1729,13 +1727,13 @@ code
                         LAMBDA
                           (pair
                             (pair
-                              key
+                              key_hash
                               nat
                               )
                             (pair
                               nat
                               (map
-                                key
+                                key_hash
                                 nat
                                 )
                               )
@@ -1743,7 +1741,7 @@ code
                           (pair
                             nat
                             (map
-                              key
+                              key_hash
                               nat
                               )
                             )
@@ -2083,24 +2081,24 @@ code
             PAIR ;
             LEFT
               (pair
-                key
-                key
+                key_hash
+                key_hash
                 )
               ;
             RIGHT
               (pair
-                key
+                key_hash
                 nat
                 )
               ;
             RIGHT
               (pair
-                key
+                key_hash
                 nat
                 )
               ;
             RIGHT
-              key
+              key_hash
               ;
             RIGHT
               unit
@@ -2331,7 +2329,7 @@ code
                                 PUSH
                                   (list
                                     (pair
-                                      key
+                                      key_hash
                                       (pair
                                         nat
                                         nat

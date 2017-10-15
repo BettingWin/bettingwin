@@ -2,15 +2,15 @@
 
 type parameter_t = 
 | Token_info
-| Balance of key
-| Transfer_token of (key * nat)
-| Approve of (key * nat)
-| Transfer_token_from_approve_dict of (key * key * nat)
-| Allowance of (key * key)
+| Balance of key_hash
+| Transfer_token of (key_hash * nat)
+| Approve of (key_hash * nat)
+| Transfer_token_from_approve_dict of (key_hash * key_hash * nat)
+| Allowance of (key_hash * key_hash)
 
 type storage_t = {
-  approve_dict : (key, (key, nat) map) map;
-  balance : (key, nat) map;
+  approve_dict : (key_hash, (key_hash, nat) map) map;
+  balance : (key_hash, nat) map;
   total_supply : nat;
   decimals : nat;
   name : string;
@@ -26,7 +26,7 @@ type return_t = nat * return_variant
 
 
 
-let get_balance = fun (balance_map : (key, nat) map) -> fun (k : key) ->
+let get_balance = fun (balance_map : (key_hash, nat) map) -> fun (k : key_hash) ->
   match Map.find k balance_map with
   | None -> 0p
   | Some x -> x
@@ -70,7 +70,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
         let new_source_balance = abs (source_balance - amount) in
         let new_balance = Map.update source (Some new_source_balance) storage.balance in
         let approve_dict_lst = match Map.find source storage.approve_dict with
-          | None -> Map.update target (Some amount) (Map [] : (key, nat) map)
+          | None -> Map.update target (Some amount) (Map [] : (key_hash, nat) map)
           | Some x -> 
             let new_amount = match Map.find target x with
               | None -> amount
