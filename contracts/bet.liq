@@ -49,6 +49,7 @@ type bookmaker = {
 
 type storage_t = {
   parameter : parameter_t;
+  self_key : key_hash;
   token_contract : token_contract;
   state : state;
   info : info;
@@ -83,7 +84,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
   | Disabled n ->
     (Fail (n + 50p), storage)
   | Open ->
-    let self = Contract.manager (Current.contract ()) in
+    let self = storage.self_key in
     let source = Contract.manager (Source : (unit, unit) contract) in
     let preprocess_return = 
       match parameter with
