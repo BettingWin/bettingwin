@@ -7,7 +7,7 @@
           callback(this.responseText)
         }
       }
-      xhr.open("POST", url, true)
+      xhr.open('POST', url, true)
       xhr.send(JSON.stringify(params))
     }
   }
@@ -15,8 +15,10 @@
   var domain = 'http://127.0.0.1:8080'
   var rpcCall = function(method, params, callback){
     var router = {
+      'prevalidation': '/blocks/prevalidation',
       'bootstrapped': '/bootstrapped',
-      'blocks': '/blocks'
+      'blocks': '/blocks',
+      'inject_operation': '/inject_operation'
     }
 
     util.post(domain + router[method], params, callback)
