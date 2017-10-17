@@ -105,12 +105,12 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
           let odds_lst = x.(2) in
           let odds_mod' = match Map.find i odds_mod with
             | None -> Map.update i (Some 1p) odds_mod
-            | Some z -> odds_mod
+            | Some _ -> odds_mod
           in
           match odds_lst with
           | [] -> 
             (false, (odds_mod', i, odds_lst))
-          | z :: tl ->
+          | _ :: tl ->
             (true, (odds_mod', i + 1p, tl))
 
         ) (odds_mod, 0p, storage.info.odds_lst)
@@ -153,9 +153,9 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
         else
           (Right (Fail 7p, storage) : (nat, return_t * storage_t) variant)
 
-      | Report z -> 
+      | Report _ -> 
         (match Map.find source storage.reports with
-        | Some z ->
+        | Some _ ->
           (Right (Fail 3p, storage) : (nat, return_t * storage_t) variant)
         | None ->
           (Left 1000p : (nat, return_t * storage_t) variant))
@@ -233,7 +233,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
       let source = Contract.manager (Source : (unit, unit) contract) in
       if result.(0) = 0p then
         match storage.parameter with
-        | Setup_odds z -> (Fail 2p, storage)
+        | Setup_odds _ -> (Fail 2p, storage)
         | Settle -> (Fail 2p, storage)
 
         | Add_margin token -> 
@@ -241,7 +241,7 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
           let storage = 
             match storage.bookmaker.key with 
             | None -> storage.bookmaker.key <- Some source
-            | Some z -> storage
+            | Some _ -> storage
           in
           let storage = storage.all_token_amount <- storage.all_token_amount + token in
           (Success, storage)
