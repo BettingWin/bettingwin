@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
+  <b id="iframe-loading-tip">Loading tezbox-bridge...</b>
   <iframe style="display: none" src="https://tezbox-bridge.github.io/" id="tezbox"></iframe>
   <p>
     Chrome-PC: Good to go <br>
@@ -20,7 +21,11 @@
   <button onclick="getBalance()">get balance</button>
 </body>
 <script type="text/javascript">
-  var tezbox_window = document.getElementById('tezbox').contentWindow
+  var tezbox_dom = document.getElementById('tezbox')
+  var tezbox_window = tezbox_dom.contentWindow
+  tezbox_dom.onload = function(){
+    document.getElementById('iframe-loading-tip').innerHTML = 'tezbox-bridge loaded'
+  }
 
   var getAddress = function(){
     tezbox_window.postMessage({tz_method: 'get_address'}, '*')
