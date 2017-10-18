@@ -27,6 +27,7 @@
   }
 
   var getBalance = function(){
+    balance.innerHTML = 'loading...'
     tezbox_window.postMessage({tz_method: 'get_balance'}, '*')
   }
 
