@@ -55,21 +55,21 @@ type storage_t = {
 (* =============== All aboves are commonly used in betting contracts =============== *)
 
 type parameter_t = 
-| Get
-| Set of storage_t
+| Check
+| Override of storage_t
 
 type return_t = storage_t
 
 let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return_t] =
   match parameter with
-  | Get ->
+  | Check ->
     (storage, storage)
-  | Set input ->
+  | Override input ->
     let source = Contract.manager (Source : (unit, unit) contract) in
     if source = storage.self_key then
       (input, input)  
     else
-      (storage, storage)
+      Current.fail ()
 
 
 

@@ -446,9 +446,7 @@ code
             PAIR ;
           }
           {
-            DUUUP ;
-            DUUUUP ;
-            PAIR ;
+            FAIL ;
           }
           ;
         DIP
