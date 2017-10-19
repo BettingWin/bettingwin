@@ -1,12 +1,6 @@
 parameter
   (pair
-    (pair
-      nat
-      (pair
-        nat
-        nat
-        )
-      )
+    nat
     (contract
       (or
         unit
@@ -288,13 +282,7 @@ parameter
 storage
   (pair
     (pair
-      (pair
-        nat
-        (pair
-          nat
-          nat
-          )
-        )
+      nat
       (contract
         (or
           unit
@@ -890,339 +878,39 @@ code
       ;
     TRANSFER_TOKENS ;
     DUUP ;
-    DUP ;
-    CAR ;
     SOURCE
       unit
       unit
       ;
     MANAGER ;
-    DUUP ;
-    DUP ;
-    CAR ;
-    CAR ;
-    DUUP ;
-    CAR ;
-    CDAR ;
     DUUUP ;
-    CAR ;
-    CDDR ;
+    CDDDDDDDDAR ;
     DUUP ;
-    LAMBDA
-      (pair
-        (pair
-          (pair
-            nat
-            nat
-            )
-          nat
-          )
-        nat
-        )
-      nat
-      {
-        DUP ;
-        CAR ;
-        CDR ;
-        DUUP ;
-        CDR ;
-        DUUUP ;
-        CAR ;
-        CAR ;
-        CAR ;
-        COMPARE ;
-        NEQ ;
-        IF
-          {
-            DUUP ;
-            CAR ;
-            CAR ;
-            CDR ;
-            DUUP ;
-            ADD ;
-          }
-          {
-            DUP ;
-          }
-          ;
-        DIP
-          {
-            DROP ;
-            DROP ;
-          }
-          ;
-      }
-      ;
-    PAIR ;
-    PUSH
-      nat
-      0 ;
-    DUUUUUUUUUUP ;
-    CDDDDDDDAR ;
-    DUUUUUP ;
     GET ;
     IF_NONE
       {
-        PUSH
-          (list
-            (pair
-              key_hash
-              (pair
-                nat
-                nat
-                )
-              )
-            )
-          (List
-            ) ;
-        DUUUUUUP ;
-        DUUUUUP ;
-        PAIR ;
-        DUUUUUUUUUP ;
-        PAIR ;
-        CONS ;
-      }
-      {
-        DUUUUUUP ;
-        DUUUUUP ;
-        PAIR ;
-        DUUUUUUUUUP ;
-        PAIR ;
-        CONS ;
-      }
-      ;
-    LAMBDA
-      (pair
-        (pair
-          key_hash
-          (pair
-            nat
-            nat
-            )
-          )
-        nat
-        )
-      nat
-      {
-        PUSH
-          nat
-          1000 ;
-        DUUP ;
-        CAR ;
-        CDAR ;
         DUUUP ;
-        CAR ;
-        CDDR ;
-        MUL ;
-        EDIV ;
-        IF_NONE
-          {
-            PUSH
-              nat
-              0 ;
-          }
-          {
-            CAR ;
-          }
-          ;
-        SWAP ;
-        CDR ;
-        ADD ;
-      }
-      ;
-    REDUCE ;
-    PUSH
-      nat
-      0 ;
-    PUSH
-      (list
-        (pair
-          nat
-          nat
-          )
-        )
-      (List
-        ) ;
-    PUSH
-      (list
-        (pair
-          nat
-          nat
-          )
-        )
-      (List
-        ) ;
-    DUUUUUUUUUUUUUP ;
-    CDDDDDDAR ;
-    LAMBDA
-      (pair
-        (pair
-          nat
-          nat
-          )
-        (list
-          (pair
-            nat
-            nat
-            )
-          )
-        )
-      (list
-        (pair
-          nat
-          nat
-          )
-        )
-      {
-        DUP ;
-        CDR ;
-        SWAP ;
-        CAR ;
-        CONS ;
-      }
-      ;
-    REDUCE ;
-    LAMBDA
-      (pair
-        (pair
-          nat
-          nat
-          )
-        (list
-          (pair
-            nat
-            nat
-            )
-          )
-        )
-      (list
-        (pair
-          nat
-          nat
-          )
-        )
-      {
-        DUP ;
-        CDR ;
-        SWAP ;
-        CAR ;
-        CONS ;
-      }
-      ;
-    REDUCE ;
-    PAIR ;
-    PUSH
-      bool
-      True ;
-    LOOP
-      {
-        DUP ;
-        CAR ;
-        IF_CONS
-          {
-            DUUUUUP ;
-            DUUUUP ;
-            CDR ;
-            DUUUP ;
-            PAIR ;
-            DIP
-              {
-                DUP ;
-                CAR ;
-                SWAP ;
-                CDR ;
-              }
-              ;
-            PAIR ;
-            EXEC ;
-            SWAP ;
-            DROP ;
-            SWAP ;
-            PAIR ;
-            PUSH
-              bool
-              True ;
-            PAIR ;
-          }
-          {
-            DUP ;
-            CDR ;
-            PUSH
-              (list
-                (pair
-                  nat
-                  nat
-                  )
-                )
-              (List
-                ) ;
-            PAIR ;
-            PUSH
-              bool
-              False ;
-            PAIR ;
-          }
-          ;
-        DIP
+        DUUUP ;
+        DIIIP
           {
             DROP ;
           }
           ;
-        DUP ;
-        CAR ;
-        DIP
-          {
-            CDR ;
-          }
-          ;
-      }
-      ;
-    DIIP
-      {
-        DROP ;
-        DROP ;
-        DROP ;
-      }
-      ;
-    CDR ;
-    DUUUUUUUUP ;
-    CDDDDAR ;
-    CDAR ;
-    ADD ;
-    COMPARE ;
-    GE ;
-    IF
-      {
-        DIP
-          {
-            DROP ;
-          }
-          ;
-        DUUUUUP ;
-        DUUUUP ;
-        PAIR ;
-        DUUUUUUP ;
-        CDAR ;
-        PUSH
-          tez
-          "0" ;
-        DUUUUP ;
         DIIIIP
           {
             DROP ;
           }
           ;
-        DIIIIIP
-          {
-            DROP ;
-            DROP ;
-          }
-          ;
-        DIIIIIIP
-          {
-            DROP ;
-          }
-          ;
+        CAR ;
+        PAIR ;
+        DUUUP ;
+        CDAR ;
+        PUSH
+          tez
+          "0" ;
+        PUSH
+          nat
+          1000 ;
         DUUUUUUP ;
         DIIIIIIP
           {
@@ -1278,13 +966,7 @@ code
             DUUP ;
             CDR ;
             DUUP ;
-            DUP ;
-            CAR ;
-            CAR ;
             DUUP ;
-            CAR ;
-            CDAR ;
-            DUUUUP ;
             DUP ;
             CAR ;
             SWAP ;
@@ -1313,44 +995,21 @@ code
             CAR ;
             SWAP ;
             CDR ;
+            DUP ;
+            CAR ;
+            SWAP ;
             CDR ;
-            DUUUUUUUUUUUUP ;
-            CDDDDDDDAR ;
-            DUUUUUUUUUUUUUP ;
-            CDDDDDDDAR ;
+            CDR ;
             DUUUUUUUUUUUP ;
-            GET ;
-            IF_NONE
-              {
-                PUSH
-                  (list
-                    (pair
-                      key_hash
-                      (pair
-                        nat
-                        nat
-                        )
-                      )
-                    )
-                  (List
-                    ) ;
-              }
-              {}
-              ;
-            DUUUUUUUUUUUUP ;
-            DUUUUUUUUUUUUUUP ;
+            CDDDDDDDDAR ;
+            DUUUUUUUUUUUP ;
             CAR ;
-            CDDR ;
-            PAIR ;
+            SOME ;
             SOURCE
               unit
               unit
               ;
             MANAGER ;
-            PAIR ;
-            CONS ;
-            SOME ;
-            DUUUUUUUUUUUP ;
             UPDATE ;
             PAIR ;
             SWAP ;
@@ -1367,6 +1026,8 @@ code
             PAIR ;
             SWAP ;
             PAIR ;
+            SWAP ;
+            PAIR ;
             DUP ;
             DUP ;
             CAR ;
@@ -1389,96 +1050,29 @@ code
             SWAP ;
             CDR ;
             CDR ;
-            DUUUUUUUUUP ;
+            PUSH
+              nat
+              1000 ;
             DUUUUUUUUP ;
+            DIIIIIIIIP
+              {
+                DROP ;
+              }
+              ;
+            DIIIIIIIIIP
+              {
+                DROP ;
+              }
+              ;
+            DIIIIIIIIIIP
+              {
+                DROP ;
+                DROP ;
+                DROP ;
+              }
+              ;
             CDDDDDAR ;
             ADD ;
-            PAIR ;
-            SWAP ;
-            PAIR ;
-            SWAP ;
-            PAIR ;
-            SWAP ;
-            PAIR ;
-            SWAP ;
-            PAIR ;
-            SWAP ;
-            PAIR ;
-            DUP ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            DUP ;
-            CAR ;
-            SWAP ;
-            CDR ;
-            CDR ;
-            DUUUUUUUUP ;
-            CDDDDDDAR ;
-            DUUUUUUUUUUUUP ;
-            DUUUUUUUUUUP ;
-            CDDDDDDAR ;
-            DUUUUUUUUUUUUUP ;
-            GET ;
-            IF_NONE
-              {
-                PUSH
-                  nat
-                  0 ;
-              }
-              {}
-              ;
-            DIIIIIIIIIIP
-              {
-                DROP ;
-                DROP ;
-              }
-              ;
-            DIIIIIIIIIIIP
-              {
-                DROP ;
-              }
-              ;
-            ADD ;
-            SOME ;
-            DUUUUUUUUUUP ;
-            DIIIIIIIIIIP
-              {
-                DROP ;
-              }
-              ;
-            DIIIIIIIIIIIP
-              {
-                DROP ;
-              }
-              ;
-            DIIIIIIIIIIIIP
-              {
-                DROP ;
-                DROP ;
-                DROP ;
-              }
-              ;
-            UPDATE ;
-            PAIR ;
-            SWAP ;
             PAIR ;
             SWAP ;
             PAIR ;
@@ -1543,17 +1137,20 @@ code
             PAIR ;
           }
           ;
+        DIP
+          {
+            DROP ;
+            DROP ;
+            DROP ;
+            DROP ;
+          }
+          ;
       }
       {
-        DROP ;
-        DROP ;
-        DROP ;
-        DROP ;
-        DROP ;
-        DROP ;
+        DUUUUUP ;
         PUSH
           string
-          "Insufficient margin" ;
+          "the source key has reported" ;
         RIGHT
           nat
           ;

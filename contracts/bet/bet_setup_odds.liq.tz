@@ -66,7 +66,7 @@ parameter
               (or
                 unit
                 (or
-                  nat
+                  string
                   unit
                   )
                 )
@@ -203,7 +203,7 @@ parameter
             (or
               unit
               (or
-                nat
+                string
                 unit
                 )
               )
@@ -351,7 +351,7 @@ storage
                 (or
                   unit
                   (or
-                    nat
+                    string
                     unit
                     )
                   )
@@ -488,7 +488,7 @@ storage
               (or
                 unit
                 (or
-                  nat
+                  string
                   unit
                   )
                 )
@@ -626,7 +626,7 @@ storage
           (or
             unit
             (or
-              nat
+              string
               unit
               )
             )
@@ -707,7 +707,7 @@ storage
 return
   (or
     unit
-    nat
+    string
     );
 code
   {
@@ -801,7 +801,7 @@ code
             (or
               unit
               (or
-                nat
+                string
                 unit
                 )
               )
@@ -891,8 +891,8 @@ code
       {
         DUUUUUP ;
         PUSH
-          nat
-          1 ;
+          string
+          "Please add margin first" ;
         RIGHT
           unit
           ;
@@ -1091,7 +1091,7 @@ code
               unit
               Unit ;
             LEFT
-              nat
+              string
               ;
             PAIR ;
           }
@@ -1102,8 +1102,8 @@ code
             DROP ;
             DROP ;
             PUSH
-              nat
-              2 ;
+              string
+              "Source key doesn't match bookmaker's key" ;
             RIGHT
               unit
               ;

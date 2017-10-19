@@ -60,7 +60,7 @@ parameter
           (or
             unit
             (or
-              nat
+              string
               unit
               )
             )
@@ -198,7 +198,7 @@ storage
         (or
           unit
           (or
-            nat
+            string
             unit
             )
           )
@@ -335,7 +335,7 @@ return
         (or
           unit
           (or
-            nat
+            string
             unit
             )
           )

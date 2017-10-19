@@ -20,7 +20,7 @@ type odd_decimal = nat    (* it should be div 1000 *)
 
 type state =
 | Open
-| Disabled of nat
+| Disabled of string
 | Settled
 
 type info = {

@@ -63,7 +63,7 @@ parameter
               (or
                 unit
                 (or
-                  nat
+                  string
                   unit
                   )
                 )
@@ -200,7 +200,7 @@ parameter
             (or
               unit
               (or
-                nat
+                string
                 unit
                 )
               )
@@ -345,7 +345,7 @@ storage
                 (or
                   unit
                   (or
-                    nat
+                    string
                     unit
                     )
                   )
@@ -482,7 +482,7 @@ storage
               (or
                 unit
                 (or
-                  nat
+                  string
                   unit
                   )
                 )
@@ -620,7 +620,7 @@ storage
           (or
             unit
             (or
-              nat
+              string
               unit
               )
             )
@@ -701,7 +701,10 @@ storage
 return
   (or
     unit
-    nat
+    (or
+      nat
+      string
+      )
     );
 code
   {
@@ -795,7 +798,7 @@ code
             (or
               unit
               (or
-                nat
+                string
                 unit
                 )
               )
@@ -1188,23 +1191,20 @@ code
               unit
               Unit ;
             LEFT
-              nat
+              (or
+                nat
+                string
+                )
               ;
             PAIR ;
           }
           {
             SWAP ;
-            PUSH
-              nat
-              100 ;
-            DUUUP ;
-            DIIIP
-              {
-                DROP ;
-              }
-              ;
+            SWAP ;
             CAR ;
-            ADD ;
+            LEFT
+              string
+              ;
             RIGHT
               unit
               ;
@@ -1218,8 +1218,11 @@ code
         DROP ;
         DROP ;
         PUSH
+          string
+          "Source key doesn't match the bookmaker's key" ;
+        RIGHT
           nat
-          1 ;
+          ;
         RIGHT
           unit
           ;

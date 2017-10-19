@@ -20,7 +20,7 @@ type odd_decimal = nat    (* it should be div 1000 *)
 
 type state =
 | Open
-| Disabled of nat
+| Disabled of string
 | Settled
 
 type info = {
@@ -120,7 +120,6 @@ let%entry main
       let bet_storage = bet_storage.all_bets_token_amount <- Map.update odd_index (Some (prev_bet_token_amount + token)) bet_storage.all_bets_token_amount in
       let (z, storage) = Contract.call bet_contract 0tz (parameter, bet_storage) (Override bet_storage) in
       (Success, storage)
-
     else
       (Transfer_fail result.(0), storage)
   else
