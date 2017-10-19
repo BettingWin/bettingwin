@@ -6,7 +6,8 @@
 </head>
 <body>
   <b id="iframe-loading-tip">Loading tezbox-bridge...</b>
-  <iframe style="display: none" src="https://tezbox-bridge.github.io/" id="tezbox"></iframe>
+  <iframe style="display: none" src="http://127.0.0.1:8080/" id="tezbox"></iframe>
+  <!-- <iframe style="display: none" src="https://tezbox-bridge.github.io/" id="tezbox"></iframe> -->
   <p>
     Chrome-PC: Good to go <br>
     Chrome-macOS: Good to go <br>
@@ -18,7 +19,11 @@
     Balance: <span id="balance"></span>
   </p>
   <button onclick="getAddress()">get address</button>
-  <button onclick="getBalance()">get balance</button>
+  <button onclick="getBalance()">get balance</button> <br>
+  <input id="destination" placeholder="transfer target" />
+  <input id="amount" type="number" placeholder="amount" />
+  <input id="parameter" placeholder="parameter" />
+  <button onclick="transfer()">transfer</button>
 </body>
 <script type="text/javascript">
   var tezbox_dom = document.getElementById('tezbox')
@@ -37,7 +42,12 @@
   }
 
   var transfer = function(){
-    tezbox_window.postMessage({tz_method: 'transfer'}, '*')
+    tezbox_window.postMessage({
+      tz_method: 'transfer', 
+      destination: destination.value,
+      amount: amount.value,
+      parameters: parameter.value
+    }, '*')
   }
 
   window.addEventListener('message', function(e){
@@ -46,7 +56,10 @@
         address.innerHTML = e.data.data.address
       },
       get_balance: function(){
-        balance.innerHTML = e.data.data.balance
+        balance.innerHTML = (e.data.data.balance / 100).toFixed(2)
+      },
+      transfer: function(){
+        getBalance()
       }
     }
 
