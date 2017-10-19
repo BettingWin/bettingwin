@@ -1,5 +1,3 @@
-[%%version 0.1]
-
 type token_p = 
 | Token_info
 | Balance of key_hash

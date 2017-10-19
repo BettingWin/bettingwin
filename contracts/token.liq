@@ -1,5 +1,3 @@
-[%%version 0.1]
-
 type parameter_t = 
 | Token_info
 | Balance of key_hash
@@ -16,6 +14,11 @@ type storage_t = {
   name : string;
   symbol : string;
 }
+(* 
+  init:
+  (Pair (Map ) (Pair (Map ) (Pair 100000 (Pair 2 (Pair "BettingWin" "BTW" ) ) ) ) )
+*)
+
 
 type return_variant =
 | General_return

@@ -58,12 +58,12 @@ type bet_parameter_t =
 
 (* =============== All aboves are commonly used in betting contracts =============== *)
 
-type parameter_t = token * (bet_parameter_t, storage_t) contract
+type parameter_t = (odd_index, odd_decimal) map * (bet_parameter_t, storage_t) contract
 
 type return_t = 
 | Success
-| Transfer_fail of nat
 | Fail of string
+
 
 let%entry main 
   (parameter : parameter_t) 
@@ -75,34 +75,30 @@ let%entry main
   let (parameter, _) = storage in
   let source = Contract.manager (Source : (unit, unit) contract) in
 
-  let isvalid = match bet_storage.bookmaker.key with
-  | None -> true
+  let (odds_mod, bet_contract) = parameter in
+  match bet_storage.bookmaker.key with
+  | None -> 
+    (Fail "Please add margin first", storage)
   | Some key -> 
     if key = source then 
-      true
-    else 
-      false
-  in
-  if isvalid then
-    let (token, _) = parameter in
-    let (result, storage) = Contract.call bet_storage.token_contract 0tz (parameter, bet_storage) (Transfer_token_from_approve_dict (source, bet_storage.self_key, token)) in
-    if result.(0) = 0p then
-      let (parameter, bet_storage) = storage in
-      let (token, bet_contract) = parameter in
-      let bet_storage = bet_storage.bookmaker.margin <- bet_storage.bookmaker.margin + token in
-      let bet_storage = 
-        match bet_storage.bookmaker.key with 
-        | None -> 
-          let source = Contract.manager (Source : (unit, unit) contract) in
-          bet_storage.bookmaker.key <- Some source
-        | Some _ -> bet_storage
+      let result = Loop.loop (fun x -> 
+          let odds_mod = x.(0) in
+          let i = x.(1) in
+          let odds_lst = x.(2) in
+          let odds_mod' = match Map.find i odds_mod with
+            | None -> Map.update i (Some 1p) odds_mod
+            | Some _ -> odds_mod
+          in
+          match odds_lst with
+          | [] -> 
+            (false, (odds_mod', i, odds_lst))
+          | _ :: tl ->
+            (true, (odds_mod', i + 1p, tl))
+        ) (odds_mod, 0p, bet_storage.info.odds_lst)
       in
-      let bet_storage = bet_storage.all_token_amount <- bet_storage.all_token_amount + token in
+      let bet_storage = bet_storage.bookmaker.odds <- result.(0) in
       let (z, storage) = Contract.call bet_contract 0tz (parameter, bet_storage) (Override bet_storage) in
       (Success, storage)
-    else
-      (Transfer_fail result.(0), storage)
-  else
-    (Fail "Source key doesn't match the bookmaker's key", storage)
+    else 
+      (Fail "Source key doesn't match bookmaker's key", storage)
 
-  
