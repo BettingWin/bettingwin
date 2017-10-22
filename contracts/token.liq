@@ -4,117 +4,119 @@ type parameter_t =
 | Transfer_token of (key_hash * nat)
 | Approve of (key_hash * nat)
 | Transfer_token_from_approve_dict of (key_hash * key_hash * nat)
-| Allowance of (key_hash * key_hash)
+(* | Allowance of (key_hash * key_hash) *)
 
 type storage_t = {
   approve_dict : (key_hash, (key_hash, nat) map) map;
   balance : (key_hash, nat) map;
-  total_supply : nat;
-  decimals : nat;
-  name : string;
-  symbol : string;
+  info: nat * nat * string * string;
 }
 (* 
   init:
   (Pair (Map ) (Pair (Map ) (Pair 100000 (Pair 2 (Pair "BettingWin" "BTW" ) ) ) ) )
 *)
 
-
-type return_variant =
-| General_return
+type return_t =
+| General_return of nat
 | Token_info_return of nat * nat * string * string
 | Balance_return of nat
 
-type return_t = nat * return_variant
-
-
-
-let get_balance = fun (balance_map : (key_hash, nat) map) -> fun (k : key_hash) ->
-  match Map.find k balance_map with
-  | None -> 0p
-  | Some x -> x
-
 (* 
-The nat of return represents:
+The nat of General_return represents:
   0: success
   1: balance insufficient
+  2: request amount greater than approved amount
  *)  
 
 let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return_t] =
-  let get_origin_balance = get_balance storage.balance in
-  let source = Contract.manager (Source : (unit, unit) contract) in
-  let source_balance = get_origin_balance source in
   match parameter with
     | Token_info -> 
-      ((0p, Token_info_return (storage.total_supply, storage.decimals, storage.name, storage.symbol)), storage)
+      (Token_info_return storage.info, storage)
     
     | Balance from -> 
-      let result = get_origin_balance from in
-      ((0p, Balance_return result), storage)
+      let result = match Map.find from storage.balance with
+        | None -> 0p
+        | Some x -> x 
+      in
+      (Balance_return result, storage)
     
     | Transfer_token x -> 
+      let source = Contract.manager (Source : (unit, unit) contract) in
+      let source_balance = match Map.find source storage.balance with
+        | None -> 0p
+        | Some x -> x
+      in
       let target = x.(0) in
       let amount = x.(1) in
       if source_balance < amount then
-        ((1p, General_return), storage)
+        (General_return 1p, storage)
       else
         let new_source_balance = abs (source_balance - amount) in
-        let new_target_balance = amount + get_origin_balance target in
-        let b1 = Map.update source (Some new_source_balance) storage.balance in
-        let b2 = Map.update target (Some new_target_balance) b1 in
-        ((0p, General_return), storage.balance <- b2)
+        let new_target_balance = amount + (match Map.find target storage.balance with
+          | None -> 0p
+          | Some x -> x)
+        in
+        let balance = Map.update source (Some new_source_balance) storage.balance in
+        let balance = Map.update target (Some new_target_balance) balance in
+        (General_return 0p, storage.balance <- balance)
     
     | Approve x -> 
+      let source = Contract.manager (Source : (unit, unit) contract) in
       let target = x.(0) in
       let amount = x.(1) in
-      if source_balance < amount then
-        ((1p, General_return), storage)
-      else
-        let new_source_balance = abs (source_balance - amount) in
-        let new_balance = Map.update source (Some new_source_balance) storage.balance in
-        let approve_dict_lst = match Map.find source storage.approve_dict with
-          | None -> Map.update target (Some amount) (Map [] : (key_hash, nat) map)
-          | Some x -> 
-            let new_amount = match Map.find target x with
-              | None -> amount
-              | Some x -> x + amount
-            in
-            Map.update target (Some new_amount) x
-        in
-        let approve_dict = Map.update source (Some approve_dict_lst) storage.approve_dict in
-        let storage1 = storage.balance <- new_balance in
-        let storage2 = storage1.approve_dict <- approve_dict in
-        ((0p, General_return), storage2)
+      let inner_approve_dict = 
+        match Map.find source storage.approve_dict with
+        | None -> (Map [] : (key_hash, nat) map)
+        | Some x -> x
+      in
+      let inner_approve_dict = Map.update target (Some amount) inner_approve_dict in
+      let storage = storage.approve_dict <- Map.update source (Some inner_approve_dict) storage.approve_dict in
+      (General_return 0p, storage)
     
     | Transfer_token_from_approve_dict x -> 
       let source = x.(0) in
       let target = x.(1) in
-      let amount = x.(2) in 
+      let amount = x.(2) in
       (match Map.find source storage.approve_dict with
-        | None -> ((1p, General_return), storage)
+        | None -> 
+          (General_return 2p, storage)
         | Some approve_dict_lst ->
           match Map.find target approve_dict_lst with
-          | None -> ((1p, General_return), storage)
-          | Some ledger_amount ->
-            if amount > ledger_amount then
-              ((1p, General_return), storage)
+          | None -> 
+            (General_return 2p, storage)
+          | Some approved_amount ->
+            if amount > approved_amount then
+              (General_return 2p, storage)
             else
-              let new_target_balance = amount + get_origin_balance target in
-              let new_target_amount = abs (ledger_amount - amount) in
-              let new_balance = Map.update target (Some new_target_balance) storage.balance in
-              let storage1 = storage.balance <- new_balance in
-              let new_approve_dict_lst = Map.update target (Some new_target_amount) approve_dict_lst in
-              let new_approve_dict = Map.update source (Some new_approve_dict_lst) storage1.approve_dict in
-              let storage2 = storage.approve_dict <- new_approve_dict in
-              ((0p, General_return), storage2))
+              let origin_source_balance = match Map.find source storage.balance with
+                | None -> 0p
+                | Some x -> x 
+              in
+              if amount > origin_source_balance then
+                (General_return 1p, storage)
+              else
+                let new_target_balance = amount + (match Map.find target storage.balance with
+                  | None -> 0p
+                  | Some x -> x) 
+                in
+                let new_target_approved_amount = abs (approved_amount - amount) in
+                let new_source_balance = abs (origin_source_balance - amount) in
 
-    | Allowance x ->
+                let balance = Map.update target (Some new_target_balance) storage.balance in
+                let balance = Map.update source (Some new_source_balance) balance in
+                let stroage = storage.balance <- balance in
+                let new_approve_dict_lst = Map.update target (Some new_target_approved_amount) approve_dict_lst in
+                let new_approve_dict = Map.update source (Some new_approve_dict_lst) stroage.approve_dict in
+                let storage = storage.approve_dict <- new_approve_dict in
+                (General_return 0p, storage))
+
+(*     | Allowance x ->
       let source = x.(0) in
       let target = x.(1) in
       match Map.find source storage.approve_dict with
-      | None -> ((0p, Balance_return 0p), storage)
+      | None -> (Balance_return 0p, storage)
       | Some x ->
         match Map.find target x with
-        | None -> ((0p, Balance_return 0p), storage)
-        | Some x -> ((0p, Balance_return x), storage)
+        | None -> (Balance_return 0p, storage)
+        | Some x -> (Balance_return x, storage) *)
 

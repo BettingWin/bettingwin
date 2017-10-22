@@ -13,17 +13,11 @@ parameter
             key_hash
             nat
             )
-          (or
+          (pair
+            key_hash
             (pair
               key_hash
-              (pair
-                key_hash
-                nat
-                )
-              )
-            (pair
-              key_hash
-              key_hash
+              nat
               )
             )
           )
@@ -57,23 +51,20 @@ storage
       )
     );
 return
-  (pair
+  (or
     nat
     (or
-      unit
-      (or
+      (pair
+        nat
         (pair
           nat
           (pair
-            nat
-            (pair
-              string
-              string
-              )
+            string
+            string
             )
           )
-        nat
         )
+      nat
       )
     );
 code
@@ -85,42 +76,28 @@ code
       }
       ;
     CAR ;
-    LAMBDA
-      (map
-        key_hash
-        nat
-        )
-      (pair
-        (lambda
-          (pair
-            key_hash
-            (map
-              key_hash
-              nat
-              )
-            )
-          nat
-          )
-        (map
-          key_hash
-          nat
-          )
-        )
+    DUP ;
+    IF_LEFT
       {
-        LAMBDA
-          (pair
-            key_hash
-            (map
-              key_hash
-              nat
-              )
-            )
+        DROP ;
+        DUUP ;
+        DUUUP ;
+        CDDR ;
+        LEFT
           nat
+          ;
+        RIGHT
+          nat
+          ;
+        PAIR ;
+      }
+      {
+        IF_LEFT
           {
-            DUP ;
-            CDR ;
-            DUUP ;
-            CAR ;
+            DUUUP ;
+            DUUUUP ;
+            CDAR ;
+            DUUUP ;
             GET ;
             IF_NONE
               {
@@ -130,85 +107,11 @@ code
               }
               {}
               ;
-            DIP
+            DIIP
               {
                 DROP ;
               }
               ;
-          }
-          ;
-        PAIR ;
-      }
-      ;
-    DUUUP ;
-    CDAR ;
-    EXEC ;
-    SOURCE
-      unit
-      unit
-      ;
-    MANAGER ;
-    DUUP ;
-    DUUP ;
-    DIP
-      {
-        DUP ;
-        CAR ;
-        SWAP ;
-        CDR ;
-      }
-      ;
-    PAIR ;
-    EXEC ;
-    DUUUUP ;
-    IF_LEFT
-      {
-        DROP ;
-        DUUUUUP ;
-        DUUUUUUP ;
-        CDDDDDR ;
-        DUUUUUUUP ;
-        CDDDDAR ;
-        PAIR ;
-        DUUUUUUUP ;
-        CDDDAR ;
-        PAIR ;
-        DUUUUUUUP ;
-        CDDAR ;
-        PAIR ;
-        LEFT
-          nat
-          ;
-        RIGHT
-          unit
-          ;
-        PUSH
-          nat
-          0 ;
-        PAIR ;
-        PAIR ;
-      }
-      {
-        IF_LEFT
-          {
-            DUUUUUUP ;
-            DUUUUUP ;
-            DUUUP ;
-            DIP
-              {
-                DUP ;
-                CAR ;
-                SWAP ;
-                CDR ;
-              }
-              ;
-            DIIIIP
-              {
-                DROP ;
-              }
-              ;
-            PAIR ;
-            EXEC ;
             RIGHT
               (pair
                 nat
@@ -222,31 +125,44 @@ code
                 )
               ;
             RIGHT
-              unit
-              ;
-            PUSH
               nat
-              0 ;
-            PAIR ;
+              ;
             PAIR ;
           }
           {
             IF_LEFT
               {
-                DUP ;
-                CAR ;
+                SOURCE
+                  unit
+                  unit
+                  ;
+                MANAGER ;
+                DUUUUP ;
+                CDAR ;
                 DUUP ;
+                GET ;
+                IF_NONE
+                  {
+                    PUSH
+                      nat
+                      0 ;
+                  }
+                  {}
+                  ;
+                DUUUP ;
+                CAR ;
+                DUUUUP ;
                 CDR ;
                 DUP ;
-                DUUUUUP ;
+                DUUUUP ;
                 COMPARE ;
                 LT ;
                 IF
                   {
-                    DUUUUUUUUP ;
+                    DUUUUUUUP ;
                     PUSH
-                      unit
-                      Unit ;
+                      nat
+                      1 ;
                     LEFT
                       (or
                         (pair
@@ -262,40 +178,36 @@ code
                         nat
                         )
                       ;
-                    PUSH
-                      nat
-                      1 ;
-                    PAIR ;
                     PAIR ;
                   }
                   {
-                    DUUUUUUUUP ;
+                    DUUUUUUUP ;
                     DUP ;
                     CAR ;
                     SWAP ;
                     CDR ;
                     CDR ;
-                    DUUUUUUUUUUP ;
+                    DUUUUUUUUUP ;
                     CDAR ;
                     DUUUUP ;
-                    DUUUUUUUUP ;
+                    DUUUUUUUP ;
                     SUB ;
                     ABS ;
                     SOME ;
-                    DUUUUUUUUUP ;
+                    DUUUUUUUUP ;
                     UPDATE ;
-                    DUUUUUUUUUP ;
+                    DUUUUUUUUUUP ;
+                    CDAR ;
                     DUUUUUUP ;
-                    DIP
+                    GET ;
+                    IF_NONE
                       {
-                        DUP ;
-                        CAR ;
-                        SWAP ;
-                        CDR ;
+                        PUSH
+                          nat
+                          0 ;
                       }
+                      {}
                       ;
-                    PAIR ;
-                    EXEC ;
                     DUUUUUP ;
                     ADD ;
                     SOME ;
@@ -305,8 +217,8 @@ code
                     SWAP ;
                     PAIR ;
                     PUSH
-                      unit
-                      Unit ;
+                      nat
+                      0 ;
                     LEFT
                       (or
                         (pair
@@ -322,15 +234,13 @@ code
                         nat
                         )
                       ;
-                    PUSH
-                      nat
-                      0 ;
-                    PAIR ;
                     PAIR ;
                   }
                   ;
                 DIP
                   {
+                    DROP ;
+                    DROP ;
                     DROP ;
                     DROP ;
                     DROP ;
@@ -340,20 +250,88 @@ code
               {
                 IF_LEFT
                   {
+                    SOURCE
+                      unit
+                      unit
+                      ;
+                    MANAGER ;
+                    DUUUUP ;
+                    CDR ;
+                    DUUUUUP ;
+                    CAR ;
+                    DUUUUUUP ;
+                    CAR ;
+                    DUUUUP ;
+                    GET ;
+                    IF_NONE
+                      {
+                        PUSH
+                          (map
+                            key_hash
+                            nat
+                            )
+                          (Map
+                            ) ;
+                      }
+                      {}
+                      ;
+                    DUUUUUP ;
+                    CDR ;
+                    SOME ;
+                    DUUUUUUP ;
+                    DIIIIIIP
+                      {
+                        DROP ;
+                      }
+                      ;
+                    CAR ;
+                    UPDATE ;
+                    SOME ;
+                    DUUUUP ;
+                    DIIIIP
+                      {
+                        DROP ;
+                      }
+                      ;
+                    UPDATE ;
+                    PAIR ;
+                    PUSH
+                      nat
+                      0 ;
+                    LEFT
+                      (or
+                        (pair
+                          nat
+                          (pair
+                            nat
+                            (pair
+                              string
+                              string
+                              )
+                            )
+                          )
+                        nat
+                        )
+                      ;
+                    PAIR ;
+                  }
+                  {
                     DUP ;
                     CAR ;
                     DUUP ;
-                    CDR ;
-                    DUP ;
-                    DUUUUUP ;
-                    COMPARE ;
-                    LT ;
-                    IF
+                    CDAR ;
+                    DUUUP ;
+                    CDDR ;
+                    DUUUUUUP ;
+                    CAR ;
+                    DUUUUP ;
+                    GET ;
+                    IF_NONE
                       {
-                        DUUUUUUUUP ;
+                        DUUUUUUP ;
                         PUSH
-                          unit
-                          Unit ;
+                          nat
+                          2 ;
                         LEFT
                           (or
                             (pair
@@ -369,133 +347,18 @@ code
                             nat
                             )
                           ;
-                        PUSH
-                          nat
-                          1 ;
-                        PAIR ;
                         PAIR ;
                       }
                       {
-                        DUUUUUUUUP ;
                         DUP ;
-                        CAR ;
-                        SWAP ;
-                        CDR ;
-                        CDR ;
-                        DUUUUUUUUUUP ;
-                        CDAR ;
                         DUUUUP ;
-                        DUUUUUUUUP ;
-                        SUB ;
-                        ABS ;
-                        SOME ;
-                        DUUUUUUUUUP ;
-                        UPDATE ;
-                        PAIR ;
-                        SWAP ;
-                        PAIR ;
-                        CDR ;
-                        DUUUUUUUUUP ;
-                        CAR ;
-                        DUUUUUUUUUUP ;
-                        CAR ;
-                        DUUUUUUUUP ;
                         GET ;
                         IF_NONE
                           {
-                            PUSH
-                              (map
-                                key_hash
-                                nat
-                                )
-                              (Map
-                                ) ;
-                            DUUUUP ;
-                            SOME ;
-                            DUUUUUUP ;
-                            UPDATE ;
-                          }
-                          {
-                            DUP ;
-                            DUUP ;
                             DUUUUUUUP ;
-                            GET ;
-                            IF_NONE
-                              {
-                                DUUUUUP ;
-                              }
-                              {
-                                DUUUUUUP ;
-                                SWAP ;
-                                ADD ;
-                              }
-                              ;
-                            DIIP
-                              {
-                                DROP ;
-                              }
-                              ;
-                            SOME ;
-                            DUUUUUUP ;
-                            UPDATE ;
-                          }
-                          ;
-                        SOME ;
-                        DUUUUUUUUP ;
-                        UPDATE ;
-                        PAIR ;
-                        PUSH
-                          unit
-                          Unit ;
-                        LEFT
-                          (or
-                            (pair
-                              nat
-                              (pair
-                                nat
-                                (pair
-                                  string
-                                  string
-                                  )
-                                )
-                              )
-                            nat
-                            )
-                          ;
-                        PUSH
-                          nat
-                          0 ;
-                        PAIR ;
-                        PAIR ;
-                      }
-                      ;
-                    DIP
-                      {
-                        DROP ;
-                        DROP ;
-                        DROP ;
-                      }
-                      ;
-                  }
-                  {
-                    IF_LEFT
-                      {
-                        DUP ;
-                        CAR ;
-                        DUUP ;
-                        CDAR ;
-                        DUUUP ;
-                        CDDR ;
-                        DUUUUUUUUUP ;
-                        CAR ;
-                        DUUUUP ;
-                        GET ;
-                        IF_NONE
-                          {
-                            DUUUUUUUUUP ;
                             PUSH
-                              unit
-                              Unit ;
+                              nat
+                              2 ;
                             LEFT
                               (or
                                 (pair
@@ -511,22 +374,19 @@ code
                                 nat
                                 )
                               ;
-                            PUSH
-                              nat
-                              1 ;
-                            PAIR ;
                             PAIR ;
                           }
                           {
                             DUP ;
                             DUUUUP ;
-                            GET ;
-                            IF_NONE
+                            COMPARE ;
+                            GT ;
+                            IF
                               {
-                                DUUUUUUUUUUP ;
+                                DUUUUUUUUP ;
                                 PUSH
-                                  unit
-                                  Unit ;
+                                  nat
+                                  2 ;
                                 LEFT
                                   (or
                                     (pair
@@ -542,23 +402,31 @@ code
                                     nat
                                     )
                                   ;
-                                PUSH
-                                  nat
-                                  1 ;
-                                PAIR ;
                                 PAIR ;
                               }
                               {
+                                DUUUUUUUUP ;
+                                CDAR ;
+                                DUUUUUUP ;
+                                GET ;
+                                IF_NONE
+                                  {
+                                    PUSH
+                                      nat
+                                      0 ;
+                                  }
+                                  {}
+                                  ;
                                 DUP ;
-                                DUUUUP ;
+                                DUUUUUP ;
                                 COMPARE ;
                                 GT ;
                                 IF
                                   {
-                                    DUUUUUUUUUUUP ;
+                                    DUUUUUUUUUP ;
                                     PUSH
-                                      unit
-                                      Unit ;
+                                      nat
+                                      1 ;
                                     LEFT
                                       (or
                                         (pair
@@ -574,59 +442,62 @@ code
                                         nat
                                         )
                                       ;
-                                    PUSH
-                                      nat
-                                      1 ;
-                                    PAIR ;
                                     PAIR ;
                                   }
                                   {
-                                    DUUUUUUUUUUUP ;
+                                    DUUUUUUUUUP ;
                                     CDR ;
-                                    DUUUUUUUUUUUUP ;
+                                    DUUUUUUUUUUP ;
                                     DUP ;
                                     CAR ;
                                     SWAP ;
                                     CDR ;
                                     CDR ;
-                                    DUUUUUUUUUUUUUUP ;
+                                    DUUUUUUUUUUUUP ;
                                     CDAR ;
                                     DUUUUUUUUUUUUUP ;
-                                    DUUUUUUUUUP ;
-                                    DIP
+                                    CDAR ;
+                                    DUUUUUUUUUUP ;
+                                    GET ;
+                                    IF_NONE
                                       {
-                                        DUP ;
-                                        CAR ;
-                                        SWAP ;
-                                        CDR ;
+                                        PUSH
+                                          nat
+                                          0 ;
                                       }
+                                      {}
                                       ;
-                                    PAIR ;
-                                    EXEC ;
-                                    DUUUUUUUUP ;
+                                    DUUUUUUUUUP ;
                                     ADD ;
                                     SOME ;
-                                    DUUUUUUUUUP ;
+                                    DUUUUUUUUUUP ;
+                                    UPDATE ;
+                                    DUUUUUUUUP ;
+                                    DUUUUUUP ;
+                                    SUB ;
+                                    ABS ;
+                                    SOME ;
+                                    DUUUUUUUUUUUP ;
                                     UPDATE ;
                                     PAIR ;
                                     SWAP ;
                                     PAIR ;
                                     CAR ;
-                                    DUUUUP ;
-                                    DUUUUUUP ;
                                     DUUUUUP ;
+                                    DUUUUUUUP ;
+                                    DUUUUUUP ;
                                     SUB ;
                                     ABS ;
                                     SOME ;
-                                    DUUUUUUUUP ;
+                                    DUUUUUUUUUP ;
                                     UPDATE ;
                                     SOME ;
-                                    DUUUUUUUUP ;
+                                    DUUUUUUUUUP ;
                                     UPDATE ;
                                     PAIR ;
                                     PUSH
-                                      unit
-                                      Unit ;
+                                      nat
+                                      0 ;
                                     LEFT
                                       (or
                                         (pair
@@ -642,10 +513,6 @@ code
                                         nat
                                         )
                                       ;
-                                    PUSH
-                                      nat
-                                      0 ;
-                                    PAIR ;
                                     PAIR ;
                                   }
                                   ;
@@ -666,114 +533,16 @@ code
                         DIP
                           {
                             DROP ;
-                            DROP ;
-                            DROP ;
-                            DROP ;
                           }
                           ;
                       }
+                      ;
+                    DIP
                       {
-                        DUUUUUUP ;
-                        CAR ;
-                        DUUP ;
-                        CAR ;
-                        GET ;
-                        IF_NONE
-                          {
-                            DUUUUUUP ;
-                            PUSH
-                              nat
-                              0 ;
-                            RIGHT
-                              (pair
-                                nat
-                                (pair
-                                  nat
-                                  (pair
-                                    string
-                                    string
-                                    )
-                                  )
-                                )
-                              ;
-                            RIGHT
-                              unit
-                              ;
-                            PUSH
-                              nat
-                              0 ;
-                            PAIR ;
-                            PAIR ;
-                          }
-                          {
-                            DUP ;
-                            DUUUP ;
-                            CDR ;
-                            GET ;
-                            IF_NONE
-                              {
-                                DUUUUUUUP ;
-                                PUSH
-                                  nat
-                                  0 ;
-                                RIGHT
-                                  (pair
-                                    nat
-                                    (pair
-                                      nat
-                                      (pair
-                                        string
-                                        string
-                                        )
-                                      )
-                                    )
-                                  ;
-                                RIGHT
-                                  unit
-                                  ;
-                                PUSH
-                                  nat
-                                  0 ;
-                                PAIR ;
-                                PAIR ;
-                              }
-                              {
-                                DUUUUUUUUP ;
-                                SWAP ;
-                                RIGHT
-                                  (pair
-                                    nat
-                                    (pair
-                                      nat
-                                      (pair
-                                        string
-                                        string
-                                        )
-                                      )
-                                    )
-                                  ;
-                                RIGHT
-                                  unit
-                                  ;
-                                PUSH
-                                  nat
-                                  0 ;
-                                PAIR ;
-                                PAIR ;
-                              }
-                              ;
-                            DIP
-                              {
-                                DROP ;
-                              }
-                              ;
-                          }
-                          ;
-                        DIP
-                          {
-                            DROP ;
-                          }
-                          ;
+                        DROP ;
+                        DROP ;
+                        DROP ;
+                        DROP ;
                       }
                       ;
                   }
@@ -786,9 +555,6 @@ code
       ;
     DIP
       {
-        DROP ;
-        DROP ;
-        DROP ;
         DROP ;
         DROP ;
       }
