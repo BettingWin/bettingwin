@@ -1,7 +1,16 @@
 ## token standard
 
-### notice
-`pos(x)` means the x-th position at a `or` type or a `pair` type.
+### defination
+`pos(x)` means the x-th position at a `or` type.
+
+example
+```
+(or 
+  nat            <- pos(0)
+  (or      
+    string       <- pos(1)
+    key_hash))   <- pos(2)
+```
 
 ### functions
 | function name | parameter type | return type | description |
