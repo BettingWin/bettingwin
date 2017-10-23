@@ -1,3 +1,5 @@
+[%%version 0.12]
+
 type parameter_t = 
 | Token_info
 | Balance of key_hash
@@ -48,17 +50,18 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
       in
       let target = x.(0) in
       let amount = x.(1) in
-      if source_balance < amount then
+      (match%nat (source_balance - amount) with
+      | Minus _ ->
         (General_return 1p, storage)
-      else
-        let new_source_balance = abs (source_balance - amount) in
+      | Plus diff ->
+        let new_source_balance = diff in
         let new_target_balance = amount + (match Map.find target storage.balance with
           | None -> 0p
           | Some x -> x)
         in
         let balance = Map.update source (Some new_source_balance) storage.balance in
         let balance = Map.update target (Some new_target_balance) balance in
-        (General_return 0p, storage.balance <- balance)
+        (General_return 0p, storage.balance <- balance))
     
     | Approve x -> 
       let source = Contract.manager (Source : (unit, unit) contract) in
@@ -85,22 +88,24 @@ let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return
           | None -> 
             (General_return 2p, storage)
           | Some approved_amount ->
-            if amount > approved_amount then
+            match%nat (approved_amount - amount) with
+            | Minus _ ->
               (General_return 2p, storage)
-            else
+            | Plus approved_amount_diff ->
               let origin_source_balance = match Map.find source storage.balance with
                 | None -> 0p
                 | Some x -> x 
               in
-              if amount > origin_source_balance then
+              match%nat (origin_source_balance - amount) with
+              | Minus _ -> 
                 (General_return 1p, storage)
-              else
+              | Plus origin_source_balance_diff ->
                 let new_target_balance = amount + (match Map.find target storage.balance with
                   | None -> 0p
                   | Some x -> x) 
                 in
-                let new_target_approved_amount = abs (approved_amount - amount) in
-                let new_source_balance = abs (origin_source_balance - amount) in
+                let new_target_approved_amount = approved_amount_diff in
+                let new_source_balance = origin_source_balance_diff in
 
                 let balance = Map.update target (Some new_target_balance) storage.balance in
                 let balance = Map.update source (Some new_source_balance) balance in
