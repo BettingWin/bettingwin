@@ -1,0 +1,18 @@
+{
+  "name": "bettingwin",
+  "version": "1.0.0",
+  "description": "bettingwin build system",
+  "scripts": {
+    "originate": "node originate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catsigma/bettingwin.git"
+  },
+  "author": "catsigma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/catsigma/bettingwin/issues"
+  },
+  "homepage": "https://github.com/catsigma/bettingwin#readme"
+}
