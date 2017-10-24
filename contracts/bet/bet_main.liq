@@ -60,18 +60,35 @@ type storage_t = {
 
 type parameter_t = 
 | Check
+| Check_with_transfer of key_hash * token
 | Override of storage_t
 
-type return_t = storage_t
+type return_t = nat * storage_t
 
 let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return_t] =
   match parameter with
   | Check ->
-    (storage, storage)
+    ((0p, storage), storage)
+
+  | Check_with_transfer x ->
+    let source = Contract.manager (Source : (unit, unit) contract) in
+    if source = storage.self_key then
+      let (origin_source, token) = x in
+      let (result, storage) = Contract.call storage.token_contract 0tz storage (Transfer_token_from_approve_dict (origin_source, storage.self_key, token)) in
+      match result with
+      | General_return x ->
+        ((x, storage), storage)
+      | Token_info_return _ ->
+        Current.fail ()
+      | Balance_return _ ->
+        Current.fail ()
+    else 
+      Current.fail ()
+
   | Override input ->
     let source = Contract.manager (Source : (unit, unit) contract) in
     if source = storage.self_key then
-      (input, input)  
+      ((0p, input), input)  
     else
       Current.fail ()
 

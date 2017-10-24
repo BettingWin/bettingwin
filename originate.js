@@ -15,7 +15,7 @@ const alphanet = (args) => {
     })
     p.on('close', x => {
       if (x)
-        reject(x)
+        reject(`ERROR:${x}\nDATA:${data.trim()}`)
       else {
         resolve(data.trim())
       }
@@ -24,7 +24,7 @@ const alphanet = (args) => {
 }
 
 const util = {
-  get_random_alias: (prefix) => (prefix || '') + '+' + new Buffer('' + Math.random()).toString('base64')
+  get_random_alias: (prefix) => (prefix || '') + '+' + new Buffer('' + +new Date()).toString('base64')
 }
 
 const file_lst = [
