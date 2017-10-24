@@ -19,40 +19,31 @@ parameter
                     key_hash
                     nat
                     )
-                  (or
+                  (pair
+                    key_hash
                     (pair
                       key_hash
-                      (pair
-                        key_hash
-                        nat
-                        )
-                      )
-                    (pair
-                      key_hash
-                      key_hash
+                      nat
                       )
                     )
                   )
                 )
               )
             )
-          (pair
+          (or
             nat
             (or
-              unit
-              (or
+              (pair
+                nat
                 (pair
                   nat
                   (pair
-                    nat
-                    (pair
-                      string
-                      string
-                      )
+                    string
+                    string
                     )
                   )
-                nat
                 )
+              nat
               )
             )
           )
@@ -157,40 +148,31 @@ storage
                   key_hash
                   nat
                   )
-                (or
+                (pair
+                  key_hash
                   (pair
                     key_hash
-                    (pair
-                      key_hash
-                      nat
-                      )
-                    )
-                  (pair
-                    key_hash
-                    key_hash
+                    nat
                     )
                   )
                 )
               )
             )
           )
-        (pair
+        (or
           nat
           (or
-            unit
-            (or
+            (pair
+              nat
               (pair
                 nat
                 (pair
-                  nat
-                  (pair
-                    string
-                    string
-                    )
+                  string
+                  string
                   )
                 )
-              nat
               )
+            nat
             )
           )
         )
@@ -294,40 +276,31 @@ return
                   key_hash
                   nat
                   )
-                (or
+                (pair
+                  key_hash
                   (pair
                     key_hash
-                    (pair
-                      key_hash
-                      nat
-                      )
-                    )
-                  (pair
-                    key_hash
-                    key_hash
+                    nat
                     )
                   )
                 )
               )
             )
           )
-        (pair
+        (or
           nat
           (or
-            unit
-            (or
+            (pair
+              nat
               (pair
                 nat
                 (pair
-                  nat
-                  (pair
-                    string
-                    string
-                    )
+                  string
+                  string
                   )
                 )
-              nat
               )
+            nat
             )
           )
         )

@@ -17,11 +17,14 @@ const alphanet = (args) => {
       if (x)
         reject(x)
       else {
-        console.log(`Output for: [${args}]`)
         resolve(data.trim())
       }
     })
   })
+}
+
+const util = {
+  get_random_alias: (prefix) => (prefix || '') + '+' + new Buffer('' + Math.random()).toString('base64')
 }
 
 const file_lst = [
@@ -29,8 +32,59 @@ const file_lst = [
   'contracts/bet/bet_main.liq.tz',
 ]
 
-file_lst.forEach(file => {
-  alphanet(`typecheck program container:${file}`.split(' '))
-  .then(x => console.log(x))
-  .catch(x => console.error(x))
-})
+const file_dict = {
+  'contracts/token.liq.tz': {
+    alias: util.get_random_alias('token'),
+    contract: '',
+    arg: () => `(Pair (Map ) (Pair (Map ) (Pair 100000 (Pair 2 (Pair "BettingWin" "BTW" ) ) ) ) )`
+  },
+  'contracts/bet/bet_main.liq.tz': {
+    alias: util.get_random_alias('bet_main'),
+    contract: '',
+    arg: () => {
+      const contract = file_dict['contracts/token.liq.tz'].contract
+      const bet_name = 'Initial Game'
+      const created_date = 0
+      const bet_time_start = parseInt(+new Date / 1000)
+      const bet_time_end = bet_time_start + 3600
+      const report_time_start = bet_time_end + 1
+      const report_time_end = report_time_start + 3600
+      const odds = ['Option A', 'Option B', 'Option C', 'Option D'].map(x => '"' + x + '"').join(' ')
+
+      return ` (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair "${contract}" (Pair (Left Unit) (Pair (Pair "${bet_name}" (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (List ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) ) `
+    }
+  }
+}
+
+const originate = (file_name) => {
+  return alphanet(`typecheck program container:${file_name}`.split(' '))
+  .then(x => {
+    if (x.trim() !== 'Well typed'){
+      return Promise.reject(x)
+    } else {
+      const alias = file_dict[file_name].alias
+      const arg = file_dict[file_name].arg()
+
+      return alphanet(`originate contract ${alias} for my_identity transferring 2.01 from my_account running container:${file_name} -init`.split(' ').concat(arg))
+    }
+  })
+  .then(x => {
+    const contract_id = x.match(/New contract (\w+) originated from a smart contract/)
+    if (contract_id.length > 1) {
+      file_dict[file_name].contract = contract_id[1]
+    } else {
+      return Promise.reject(x)
+    }
+  })
+}
+
+let promise = null
+for (const file_name in file_dict){
+  if (promise) {
+    promise = promise.then(() => originate(file_name))
+  } else {
+    promise = originate(file_name)
+  }
+}
+
+promise.then(() => console.log(file_dict)).catch(x => console.error(x))

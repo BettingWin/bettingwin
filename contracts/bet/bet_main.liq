@@ -1,17 +1,17 @@
+[%%version 0.12]
+
 type token_p = 
 | Token_info
 | Balance of key_hash
 | Transfer_token of (key_hash * nat)
 | Approve of (key_hash * nat)
 | Transfer_token_from_approve_dict of (key_hash * key_hash * nat)
-| Allowance of (key_hash * key_hash)
 
-type token_r_variant =
-| General_return
+type token_r =
+| General_return of nat
 | Token_info_return of nat * nat * string * string
 | Balance_return of nat
 
-type token_r = nat * token_r_variant
 type token_contract = (token_p, token_r) contract
 
 type token = nat
@@ -51,6 +51,10 @@ type storage_t = {
   reports : (key_hash, odd_index) map;
   distribution: (key_hash, token) map;
 }
+(*
+  init:
+  (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair ${contract} (Pair (Left Unit) (Pair (Pair ${bet_name} (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (list ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) )
+*)
 
 (* =============== All aboves are commonly used in betting contracts =============== *)
 
