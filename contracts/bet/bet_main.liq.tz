@@ -409,7 +409,7 @@ code
         DROP ;
         DROP ;
         DUP ;
-        DUUP ;
+        SWAP ;
         PUSH
           nat
           0 ;
@@ -541,6 +541,7 @@ code
               ;
             DIP
               {
+                DROP ;
                 DROP ;
                 DROP ;
               }
