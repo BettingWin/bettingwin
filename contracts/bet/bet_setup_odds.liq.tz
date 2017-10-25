@@ -8,290 +8,12 @@ parameter
       (or
         unit
         (pair
-          key_hash
-          (pair
-            (contract
-              (or
-                unit
-                (or
-                  key_hash
-                  (or
-                    (pair
-                      key_hash
-                      nat
-                      )
-                    (or
-                      (pair
-                        key_hash
-                        nat
-                        )
-                      (or
-                        (pair
-                          key_hash
-                          (pair
-                            key_hash
-                            nat
-                            )
-                          )
-                        (pair
-                          key_hash
-                          key_hash
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              (pair
-                nat
-                (or
-                  unit
-                  (or
-                    (pair
-                      nat
-                      (pair
-                        nat
-                        (pair
-                          string
-                          string
-                          )
-                        )
-                      )
-                    nat
-                    )
-                  )
-                )
-              )
+          (option
             (pair
-              (or
-                unit
-                (or
-                  string
-                  unit
-                  )
-                )
-              (pair
-                (pair
-                  string
-                  (pair
-                    timestamp
-                    (pair
-                      (pair
-                        timestamp
-                        timestamp
-                        )
-                      (pair
-                        (pair
-                          timestamp
-                          timestamp
-                          )
-                        (list
-                          string
-                          )
-                        )
-                      )
-                    )
-                  )
-                (pair
-                  (pair
-                    (option
-                      key_hash
-                      )
-                    (pair
-                      nat
-                      (map
-                        nat
-                        nat
-                        )
-                      )
-                    )
-                  (pair
-                    nat
-                    (pair
-                      (map
-                        nat
-                        nat
-                        )
-                      (pair
-                        (map
-                          nat
-                          (list
-                            (pair
-                              key_hash
-                              (pair
-                                nat
-                                nat
-                                )
-                              )
-                            )
-                          )
-                        (pair
-                          (map
-                            key_hash
-                            nat
-                            )
-                          (map
-                            key_hash
-                            nat
-                            )
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      (pair
-        key_hash
-        (pair
-          (contract
-            (or
-              unit
-              (or
-                key_hash
-                (or
-                  (pair
-                    key_hash
-                    nat
-                    )
-                  (or
-                    (pair
-                      key_hash
-                      nat
-                      )
-                    (or
-                      (pair
-                        key_hash
-                        (pair
-                          key_hash
-                          nat
-                          )
-                        )
-                      (pair
-                        key_hash
-                        key_hash
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            (pair
+              key_hash
               nat
-              (or
-                unit
-                (or
-                  (pair
-                    nat
-                    (pair
-                      nat
-                      (pair
-                        string
-                        string
-                        )
-                      )
-                    )
-                  nat
-                  )
-                )
               )
             )
-          (pair
-            (or
-              unit
-              (or
-                string
-                unit
-                )
-              )
-            (pair
-              (pair
-                string
-                (pair
-                  timestamp
-                  (pair
-                    (pair
-                      timestamp
-                      timestamp
-                      )
-                    (pair
-                      (pair
-                        timestamp
-                        timestamp
-                        )
-                      (list
-                        string
-                        )
-                      )
-                    )
-                  )
-                )
-              (pair
-                (pair
-                  (option
-                    key_hash
-                    )
-                  (pair
-                    nat
-                    (map
-                      nat
-                      nat
-                      )
-                    )
-                  )
-                (pair
-                  nat
-                  (pair
-                    (map
-                      nat
-                      nat
-                      )
-                    (pair
-                      (map
-                        nat
-                        (list
-                          (pair
-                            key_hash
-                            (pair
-                              nat
-                              nat
-                              )
-                            )
-                          )
-                        )
-                      (pair
-                        (map
-                          key_hash
-                          nat
-                          )
-                        (map
-                          key_hash
-                          nat
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-storage
-  (pair
-    (pair
-      (map
-        nat
-        nat
-        )
-      (contract
-        (or
-          unit
           (pair
             key_hash
             (pair
@@ -310,40 +32,31 @@ storage
                           key_hash
                           nat
                           )
-                        (or
+                        (pair
+                          key_hash
                           (pair
                             key_hash
-                            (pair
-                              key_hash
-                              nat
-                              )
-                            )
-                          (pair
-                            key_hash
-                            key_hash
+                            nat
                             )
                           )
                         )
                       )
                     )
                   )
-                (pair
+                (or
                   nat
                   (or
-                    unit
-                    (or
+                    (pair
+                      nat
                       (pair
                         nat
                         (pair
-                          nat
-                          (pair
-                            string
-                            string
-                            )
+                          string
+                          string
                           )
                         )
-                      nat
                       )
+                    nat
                     )
                   )
                 )
@@ -429,6 +142,9 @@ storage
               )
             )
           )
+        )
+      (pair
+        nat
         (pair
           key_hash
           (pair
@@ -447,40 +163,31 @@ storage
                         key_hash
                         nat
                         )
-                      (or
+                      (pair
+                        key_hash
                         (pair
                           key_hash
-                          (pair
-                            key_hash
-                            nat
-                            )
-                          )
-                        (pair
-                          key_hash
-                          key_hash
+                          nat
                           )
                         )
                       )
                     )
                   )
                 )
-              (pair
+              (or
                 nat
                 (or
-                  unit
-                  (or
+                  (pair
+                    nat
                     (pair
                       nat
                       (pair
-                        nat
-                        (pair
-                          string
-                          string
-                          )
+                        string
+                        string
                         )
                       )
-                    nat
                     )
+                  nat
                   )
                 )
               )
@@ -567,132 +274,273 @@ storage
           )
         )
       )
-    (pair
-      key_hash
-      (pair
-        (contract
-          (or
-            unit
-            (or
+    );
+storage
+  (pair
+    (map
+      nat
+      nat
+      )
+    (contract
+      (or
+        unit
+        (pair
+          (option
+            (pair
               key_hash
-              (or
-                (pair
-                  key_hash
-                  nat
-                  )
+              nat
+              )
+            )
+          (pair
+            key_hash
+            (pair
+              (contract
                 (or
-                  (pair
-                    key_hash
-                    nat
-                    )
+                  unit
                   (or
-                    (pair
-                      key_hash
+                    key_hash
+                    (or
                       (pair
                         key_hash
                         nat
                         )
-                      )
-                    (pair
-                      key_hash
-                      key_hash
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          (pair
-            nat
-            (or
-              unit
-              (or
-                (pair
-                  nat
-                  (pair
-                    nat
-                    (pair
-                      string
-                      string
-                      )
-                    )
-                  )
-                nat
-                )
-              )
-            )
-          )
-        (pair
-          (or
-            unit
-            (or
-              string
-              unit
-              )
-            )
-          (pair
-            (pair
-              string
-              (pair
-                timestamp
-                (pair
-                  (pair
-                    timestamp
-                    timestamp
-                    )
-                  (pair
-                    (pair
-                      timestamp
-                      timestamp
-                      )
-                    (list
-                      string
-                      )
-                    )
-                  )
-                )
-              )
-            (pair
-              (pair
-                (option
-                  key_hash
-                  )
-                (pair
-                  nat
-                  (map
-                    nat
-                    nat
-                    )
-                  )
-                )
-              (pair
-                nat
-                (pair
-                  (map
-                    nat
-                    nat
-                    )
-                  (pair
-                    (map
-                      nat
-                      (list
+                      (or
+                        (pair
+                          key_hash
+                          nat
+                          )
                         (pair
                           key_hash
                           (pair
-                            nat
+                            key_hash
                             nat
                             )
                           )
                         )
                       )
+                    )
+                  )
+                (or
+                  nat
+                  (or
                     (pair
-                      (map
+                      nat
+                      (pair
+                        nat
+                        (pair
+                          string
+                          string
+                          )
+                        )
+                      )
+                    nat
+                    )
+                  )
+                )
+              (pair
+                (or
+                  unit
+                  (or
+                    string
+                    unit
+                    )
+                  )
+                (pair
+                  (pair
+                    string
+                    (pair
+                      timestamp
+                      (pair
+                        (pair
+                          timestamp
+                          timestamp
+                          )
+                        (pair
+                          (pair
+                            timestamp
+                            timestamp
+                            )
+                          (list
+                            string
+                            )
+                          )
+                        )
+                      )
+                    )
+                  (pair
+                    (pair
+                      (option
+                        key_hash
+                        )
+                      (pair
+                        nat
+                        (map
+                          nat
+                          nat
+                          )
+                        )
+                      )
+                    (pair
+                      nat
+                      (pair
+                        (map
+                          nat
+                          nat
+                          )
+                        (pair
+                          (map
+                            nat
+                            (list
+                              (pair
+                                key_hash
+                                (pair
+                                  nat
+                                  nat
+                                  )
+                                )
+                              )
+                            )
+                          (pair
+                            (map
+                              key_hash
+                              nat
+                              )
+                            (map
+                              key_hash
+                              nat
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      (pair
+        nat
+        (pair
+          key_hash
+          (pair
+            (contract
+              (or
+                unit
+                (or
+                  key_hash
+                  (or
+                    (pair
+                      key_hash
+                      nat
+                      )
+                    (or
+                      (pair
                         key_hash
                         nat
                         )
-                      (map
+                      (pair
                         key_hash
+                        (pair
+                          key_hash
+                          nat
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              (or
+                nat
+                (or
+                  (pair
+                    nat
+                    (pair
+                      nat
+                      (pair
+                        string
+                        string
+                        )
+                      )
+                    )
+                  nat
+                  )
+                )
+              )
+            (pair
+              (or
+                unit
+                (or
+                  string
+                  unit
+                  )
+                )
+              (pair
+                (pair
+                  string
+                  (pair
+                    timestamp
+                    (pair
+                      (pair
+                        timestamp
+                        timestamp
+                        )
+                      (pair
+                        (pair
+                          timestamp
+                          timestamp
+                          )
+                        (list
+                          string
+                          )
+                        )
+                      )
+                    )
+                  )
+                (pair
+                  (pair
+                    (option
+                      key_hash
+                      )
+                    (pair
+                      nat
+                      (map
                         nat
+                        nat
+                        )
+                      )
+                    )
+                  (pair
+                    nat
+                    (pair
+                      (map
+                        nat
+                        nat
+                        )
+                      (pair
+                        (map
+                          nat
+                          (list
+                            (pair
+                              key_hash
+                              (pair
+                                nat
+                                nat
+                                )
+                              )
+                            )
+                          )
+                        (pair
+                          (map
+                            key_hash
+                            nat
+                            )
+                          (map
+                            key_hash
+                            nat
+                            )
+                          )
                         )
                       )
                     )
@@ -717,22 +565,13 @@ code
         CDR ;
       }
       ;
+    DIP
+      {
+        DROP ;
+      }
+      ;
     CAR ;
     DUP ;
-    DUUUP ;
-    DIIIP
-      {
-        DROP ;
-      }
-      ;
-    CDR ;
-    DUUUP ;
-    DIIIP
-      {
-        DROP ;
-      }
-      ;
-    PAIR ;
     SWAP ;
     CDR ;
     PUSH
@@ -743,18 +582,20 @@ code
       Unit ;
     LEFT
       (pair
-        key_hash
+        (option
+          (pair
+            key_hash
+            nat
+            )
+          )
         (pair
-          (contract
-            (or
-              unit
+          key_hash
+          (pair
+            (contract
               (or
-                key_hash
+                unit
                 (or
-                  (pair
-                    key_hash
-                    nat
-                    )
+                  key_hash
                   (or
                     (pair
                       key_hash
@@ -763,24 +604,21 @@ code
                     (or
                       (pair
                         key_hash
+                        nat
+                        )
+                      (pair
+                        key_hash
                         (pair
                           key_hash
                           nat
                           )
                         )
-                      (pair
-                        key_hash
-                        key_hash
-                        )
                       )
                     )
                   )
                 )
-              )
-            (pair
-              nat
               (or
-                unit
+                nat
                 (or
                   (pair
                     nat
@@ -796,78 +634,78 @@ code
                   )
                 )
               )
-            )
-          (pair
-            (or
-              unit
-              (or
-                string
-                unit
-                )
-              )
             (pair
+              (or
+                unit
+                (or
+                  string
+                  unit
+                  )
+                )
               (pair
-                string
                 (pair
-                  timestamp
+                  string
                   (pair
-                    (pair
-                      timestamp
-                      timestamp
-                      )
+                    timestamp
                     (pair
                       (pair
                         timestamp
                         timestamp
                         )
-                      (list
-                        string
+                      (pair
+                        (pair
+                          timestamp
+                          timestamp
+                          )
+                        (list
+                          string
+                          )
                         )
                       )
                     )
                   )
-                )
-              (pair
                 (pair
-                  (option
-                    key_hash
+                  (pair
+                    (option
+                      key_hash
+                      )
+                    (pair
+                      nat
+                      (map
+                        nat
+                        nat
+                        )
+                      )
                     )
                   (pair
                     nat
-                    (map
-                      nat
-                      nat
-                      )
-                    )
-                  )
-                (pair
-                  nat
-                  (pair
-                    (map
-                      nat
-                      nat
-                      )
                     (pair
                       (map
                         nat
-                        (list
-                          (pair
-                            key_hash
-                            (pair
-                              nat
-                              nat
-                              )
-                            )
-                          )
+                        nat
                         )
                       (pair
                         (map
-                          key_hash
                           nat
+                          (list
+                            (pair
+                              key_hash
+                              (pair
+                                nat
+                                nat
+                                )
+                              )
+                            )
                           )
-                        (map
-                          key_hash
-                          nat
+                        (pair
+                          (map
+                            key_hash
+                            nat
+                            )
+                          (map
+                            key_hash
+                            nat
+                            )
                           )
                         )
                       )
@@ -880,16 +718,15 @@ code
         )
       ;
     TRANSFER_TOKENS ;
-    DUUP ;
     DUP ;
-    CAR ;
+    CDR ;
     DUP ;
-    DUUUUP ;
     CDDDDAR ;
     CAR ;
     IF_NONE
       {
-        DUUUUUP ;
+        DROP ;
+        DROP ;
         PUSH
           string
           "Please add margin first" ;
@@ -909,6 +746,12 @@ code
         EQ ;
         IF
           {
+            DUUUUP ;
+            DUUUUUP ;
+            CDR ;
+            PUSH
+              tez
+              "0" ;
             DUUUUUP ;
             DUP ;
             CAR ;
@@ -945,7 +788,7 @@ code
               nat
               0 ;
             PAIR ;
-            DUUUUUUUUUUUP ;
+            DUUUUUUUUUUUUUUUUP ;
             CAR ;
             PAIR ;
             PUSH
@@ -1032,13 +875,9 @@ code
                 DROP ;
               }
               ;
-            DIIIIIIIIP
+            DIIIIIIIIIIIP
               {
                 DROP ;
-              }
-              ;
-            DIIIIIIIIIIP
-              {
                 DROP ;
                 DROP ;
                 DROP ;
@@ -1058,46 +897,56 @@ code
             PAIR ;
             SWAP ;
             PAIR ;
-            DUP ;
-            DUUUUP ;
-            DIIIIP
-              {
-                DROP ;
-              }
-              ;
-            PAIR ;
-            DUUUP ;
-            DIIIP
-              {
-                DROP ;
-              }
-              ;
-            CDR ;
             PUSH
-              tez
-              "0" ;
-            DUUUUP ;
-            DIIIIP
-              {
-                DROP ;
-              }
-              ;
+              (option
+                (pair
+                  key_hash
+                  nat
+                  )
+                )
+              None ;
+            PAIR ;
             RIGHT
               unit
               ;
             TRANSFER_TOKENS ;
-            DROP ;
             PUSH
-              unit
-              Unit ;
-            LEFT
-              string
+              nat
+              0 ;
+            DUUP ;
+            CAR ;
+            COMPARE ;
+            EQ ;
+            IF
+              {
+                DUUP ;
+                PUSH
+                  unit
+                  Unit ;
+                LEFT
+                  string
+                  ;
+                PAIR ;
+              }
+              {
+                DUUP ;
+                PUSH
+                  string
+                  "Overriding fail" ;
+                RIGHT
+                  unit
+                  ;
+                PAIR ;
+              }
               ;
-            PAIR ;
+            DIP
+              {
+                DROP ;
+                DROP ;
+              }
+              ;
           }
           {
-            DROP ;
-            DROP ;
             DROP ;
             DROP ;
             DROP ;
@@ -1108,11 +957,6 @@ code
               unit
               ;
             PAIR ;
-          }
-          ;
-        DIP
-          {
-            DROP ;
           }
           ;
       }
