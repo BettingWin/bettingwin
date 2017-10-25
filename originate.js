@@ -34,11 +34,13 @@ const file_lst = [
 
 const file_dict = {
   'contracts/token.liq.tz': {
+    typecheck: false,
     alias: util.get_random_alias('token'),
     contract: '',
     arg: () => `(Pair (Map ) (Pair (Map ) (Pair 100000 (Pair 2 (Pair "BettingWin" "BTW" ) ) ) ) )`
   },
   'contracts/bet/bet_main.liq.tz': {
+    typecheck: false,
     alias: util.get_random_alias('bet_main'),
     contract: '',
     arg: () => {
@@ -51,13 +53,24 @@ const file_dict = {
       const report_time_end = report_time_start + 3600
       const odds = ['Option A', 'Option B', 'Option C', 'Option D'].map(x => '"' + x + '"').join(' ')
 
-      return ` (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair "${contract}" (Pair (Left Unit) (Pair (Pair "${bet_name}" (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (List ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) ) `
+      return `(Pair None (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair "${contract}" (Pair (Left Unit) (Pair (Pair "${bet_name}" (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (List ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) ) )`
+    }
+  },
+  'contracts/bet/bet_add_margin.liq.tz': {
+    typecheck: false,
+    alias: util.get_random_alias('bet_add_margin'),
+    contract: '',
+    arg: () => {
+      const contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
+      return `(Pair 0 "${contract}")`
     }
   }
 }
 
 const originate = (file_name) => {
-  return alphanet(`typecheck program container:${file_name}`.split(' '))
+  return (file_dict[file_name].typecheck ? 
+    alphanet(`typecheck program container:${file_name}`.split(' ')) : 
+    Promise.resolve('Well typed'))
   .then(x => {
     if (x.trim() !== 'Well typed'){
       return Promise.reject(x)

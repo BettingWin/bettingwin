@@ -53,42 +53,50 @@ type storage_t = {
 }
 (*
   init:
-  (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair ${contract} (Pair (Left Unit) (Pair (Pair ${bet_name} (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (list ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) )
+  (Pair None (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair ${contract} (Pair (Left Unit) (Pair (Pair ${bet_name} (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (list ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) ) )
 *)
-
-(* =============== All aboves are commonly used in betting contracts =============== *)
 
 type parameter_t = 
 | Check
-| Check_with_transfer of key_hash * token
-| Override of storage_t
+| Override of (key_hash * token) option * storage_t
 
 type return_t = nat * storage_t
 
-let%entry main (parameter : parameter_t) (storage : storage_t) [%return : return_t] =
+let%entry main (parameter : parameter_t) (storage : storage_t option * storage_t) [%return : return_t] =
   match parameter with
   | Check ->
-    ((0p, storage), storage)
-
-  | Check_with_transfer x ->
-    let source = Contract.manager (Source : (unit, unit) contract) in
-    if source = storage.self_key then
-      let (origin_source, token) = x in
-      let (result, storage) = Contract.call storage.token_contract 0tz storage (Transfer_token_from_approve_dict (origin_source, storage.self_key, token)) in
-      match result with
-      | General_return x ->
-        ((x, storage), storage)
-      | Token_info_return _ ->
-        Current.fail ()
-      | Balance_return _ ->
-        Current.fail ()
-    else 
-      Current.fail ()
+    ((0p, storage.(1)), storage)
 
   | Override input ->
     let source = Contract.manager (Source : (unit, unit) contract) in
-    if source = storage.self_key then
-      ((0p, input), input)  
+    if source = let s = storage.(1) in s.self_key then
+      match input.(0) with 
+      | None ->
+        let storage = storage.(1) <- input.(1) in
+        let storage = storage.(0) <- (None : storage_t option) in
+        ((0p, storage.(1)), storage)
+      | Some x ->
+        let origin_source = x.(0) in
+        let token = x.(1) in
+        let storage = storage.(0) <- Some input.(1) in
+        let s = storage.(1) in
+        let (result, storage) = Contract.call s.token_contract 0tz storage (Transfer_token_from_approve_dict (origin_source, s.self_key, token)) in
+        match result with
+        | General_return x ->
+          let storage = 
+            if x = 0p then
+              match storage.(0) with
+              | None -> Current.fail()
+              | Some s ->
+                storage.(1) <- s
+            else
+              storage.(0) <- (None : storage_t option)
+          in
+          ((0p, storage.(1)), storage)
+        | Token_info_return _ ->
+          Current.fail ()
+        | Balance_return _ ->
+          Current.fail ()
     else
       Current.fail ()
 
