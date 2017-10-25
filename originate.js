@@ -64,6 +64,15 @@ const file_dict = {
       const contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
       return `(Pair 0 "${contract}")`
     }
+  },
+  'contracts/bet/bet_report.liq.tz': {
+    typecheck: false,
+    alias: util.get_random_alias('bet_report'),
+    contract: '',
+    arg: () => {
+      const contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
+      return `(Pair 0 "${contract}")`
+    }
   }
 }
 

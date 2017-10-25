@@ -1,6 +1,5 @@
 [%%version 0.12]
 
-
 type token_p = 
 | Token_info
 | Balance of key_hash
@@ -52,10 +51,6 @@ type storage_t = {
   reports : (key_hash, odd_index) map;
   distribution: (key_hash, token) map;
 }
-(*
-  init:
-  (Pair None (Pair "tz1bV31HQMWMqJ8crvTZrv1LHiJPUQC9ZNyY" (Pair ${contract} (Pair (Left Unit) (Pair (Pair ${bet_name} (Pair ${created_date} (Pair (Pair ${bet_time_start} ${bet_time_end} ) (Pair (Pair ${report_time_start} ${report_time_end} ) (list ${odds} ) ) ) ) ) (Pair (Pair None (Pair 0 (Map ) ) ) (Pair 0 (Pair (Map ) (Pair (Map ) (Pair (Map ) (Map ) ) ) ) ) ) ) ) ) ) )
-*)
 
 type bet_parameter_t = 
 | Check
