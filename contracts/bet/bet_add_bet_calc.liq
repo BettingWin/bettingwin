@@ -1,17 +1,17 @@
+[%%version 0.12]
+
 type token_p = 
 | Token_info
 | Balance of key_hash
 | Transfer_token of (key_hash * nat)
 | Approve of (key_hash * nat)
 | Transfer_token_from_approve_dict of (key_hash * key_hash * nat)
-| Allowance of (key_hash * key_hash)
 
-type token_r_variant =
-| General_return
+type token_r =
+| General_return of nat
 | Token_info_return of nat * nat * string * string
 | Balance_return of nat
 
-type token_r = nat * token_r_variant
 type token_contract = (token_p, token_r) contract
 
 type token = nat
@@ -54,29 +54,22 @@ type storage_t = {
 
 type bet_parameter_t = 
 | Check
-| Override of storage_t
+| Override of (key_hash * token) option * storage_t
 
-(* =============== All aboves are commonly used in betting contracts =============== *)
+type bet_return_t = nat * storage_t
 
-type parameter_t = (token * odd_index * odd_decimal) * (bet_parameter_t, storage_t) contract
+type mod_parameter_t = key_hash * (token * odd_index * odd_decimal) * storage_t * (bet_parameter_t, bet_return_t) contract
+
+type parameter_t = key_hash * (token * odd_index * odd_decimal) * storage_t * (bet_parameter_t, bet_return_t) contract
 
 type return_t = 
 | Success
 | Transfer_fail of nat
 | Fail of string
 
-
-let%entry main 
-  (parameter : parameter_t) 
-  (storage : parameter_t * storage_t) 
-  [%return : return_t] =
-  let (_, bet_contract) = parameter in
-  let (_, bet_storage) = storage in
-  let (bet_storage, storage) = Contract.call bet_contract 0tz (parameter, bet_storage) Check in
-  let (parameter, _) = storage in
-  let source = Contract.manager (Source : (unit, unit) contract) in
-  
-  let ((token, odd_index, odd_decimal), _) = parameter in
+let%entry main (parameter : parameter_t) (storage : unit) [%return : return_t] =
+  let source = parameter.(0) in
+  let (token, odd_index, odd_decimal) = parameter.(1) in
   let odds_reduce (x : ((odd_index * token) * token)) =
     let curr_odd_index = x.(0).(0) in
     let token = x.(0).(1) in
@@ -86,6 +79,7 @@ let%entry main
     else
       acc_token
   in
+  let bet_storage = parameter.(2) in
   let bet_tokens = Map.reduce odds_reduce bet_storage.all_bets_token_amount 0p in
   let all_margin = bet_storage.bookmaker.margin + bet_tokens in 
   let orders_reduce (x : ((key_hash * odd_decimal * token) * token)) =
@@ -105,25 +99,10 @@ let%entry main
   in  
   let counter_margin = List.reduce orders_reduce bet_lst 0p in        
   if all_margin >= counter_margin then
-    let (result, storage) = Contract.call bet_storage.token_contract 0tz (parameter, bet_storage) (Transfer_token_from_approve_dict (source, bet_storage.self_key, token)) in
-    if result.(0) = 0p then
-      let (parameter, bet_storage) = storage in
-      let ((token, odd_index, odd_decimal), bet_contract) = parameter in
-      let source = Contract.manager (Source : (unit, unit) contract) in
-      let orders_lst = match Map.find odd_index bet_storage.orders with
-        | None -> ([] : (key_hash * odd_decimal * token) list)
-        | Some x -> x
-      in
-      let bet_storage = bet_storage.orders <- Map.update odd_index (Some ((source, odd_decimal, token) :: orders_lst)) bet_storage.orders in
-      let bet_storage = bet_storage.all_token_amount <- bet_storage.all_token_amount + token in
-      let prev_bet_token_amount = match Map.find odd_index bet_storage.all_bets_token_amount with | None -> 0p | Some x -> x in
-      let bet_storage = bet_storage.all_bets_token_amount <- Map.update odd_index (Some (prev_bet_token_amount + token)) bet_storage.all_bets_token_amount in
-      let (z, storage) = Contract.call bet_contract 0tz (parameter, bet_storage) (Override bet_storage) in
-      (Success, storage)
-    else
-      (Transfer_fail result.(0), storage)
+    let arg = (source, parameter.(1), bet_storage, parameter.(3)) in
+    let mod_contract = (Source : (mod_parameter_t, return_t) contract) in
+    let (result, storage) = Contract.call mod_contract 0tz () arg in
+    (result, storage)
   else
-    (Fail "Insufficient margin", storage)
-
-
+    (Fail "Insufficient margin", ())
 
