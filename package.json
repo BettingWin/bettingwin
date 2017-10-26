@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "bettingwin build system",
   "scripts": {
+    "liq": "cd contracts && liq *.liq && cd bet && liq *.liq",
     "originate": "node originate.js"
   },
   "repository": {
