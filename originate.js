@@ -83,46 +83,54 @@ const file_dict = {
   //     return `(Pair (Map ) "${contract}")`
   //   }
   // },
-  'contracts/bet/bet_add_bet_mod.liq.tz': {
+  // 'contracts/bet/bet_add_bet_mod.liq.tz': {
+  //   typecheck: false,
+  //   alias: util.get_random_alias('bet_add_bet_mod'),
+  //   contract: '',
+  //   arg: () => {
+  //     return `"${key_hash}"`
+  //   }
+  // },
+  // 'contracts/bet/bet_add_bet_calc.liq.tz': {
+  //   typecheck: false,
+  //   alias: util.get_random_alias('bet_add_bet_calc'),
+  //   contract: '',
+  //   arg: () => {
+  //     const contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
+  //     return `Unit`
+  //   },
+  //   pre_process: content => {
+  //     const mod_contract = file_dict['contracts/bet/bet_add_bet_mod.liq.tz'].contract
+  //     const contracts = [mod_contract]
+  //     return content.replace(/SOURCE\s+\([^]+?;/g, (raw) => {
+  //       return `PUSH (${raw.replace('SOURCE', 'contract').replace(';', '').replace(/[\r\n]+/g, '').replace(/\ +/g, ' ')}) "${contracts.shift()}";`
+  //     })
+  //   }
+  // },
+  // 'contracts/bet/bet_add_bet_check.liq.tz': {
+  //   typecheck: false,
+  //   alias: util.get_random_alias('bet_add_bet_check'),
+  //   contract: '',
+  //   arg: () => {
+  //     const main_contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
+  //     const calc_contract = file_dict['contracts/bet/bet_add_bet_calc.liq.tz'].contract
+  //     const mod_contract = file_dict['contracts/bet/bet_add_bet_mod.liq.tz'].contract
+  //     return `(Pair (Pair 0 (Pair 0 0)) "${main_contract}")`
+  //   },
+  //   pre_process: content => {
+  //     const calc_contract = file_dict['contracts/bet/bet_add_bet_calc.liq.tz'].contract
+  //     const contracts = [calc_contract]
+  //     return content.replace(/SOURCE\s+\([^]+?;/g, (raw) => {
+  //       return `PUSH (${raw.replace('SOURCE', 'contract').replace(';', '').replace(/[\r\n]+/g, '').replace(/\ +/g, ' ')}) "${contracts.shift()}";`
+  //     })
+  //   }
+  // },
+  'contracts/bet/bet_settle_mod.liq.tz': {
     typecheck: false,
-    alias: util.get_random_alias('bet_add_bet_mod'),
+    alias: util.get_random_alias('bet_settle_mod'),
     contract: '',
     arg: () => {
-      return `"${key_hash}"`
-    }
-  },
-  'contracts/bet/bet_add_bet_calc.liq.tz': {
-    typecheck: false,
-    alias: util.get_random_alias('bet_add_bet_calc'),
-    contract: '',
-    arg: () => {
-      const contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
       return `Unit`
-    },
-    pre_process: content => {
-      const mod_contract = file_dict['contracts/bet/bet_add_bet_mod.liq.tz'].contract
-      const contracts = [mod_contract]
-      return content.replace(/SOURCE\s+\([^]+?;/g, (raw) => {
-        return `PUSH (${raw.replace('SOURCE', 'contract').replace(';', '').replace(/[\r\n]+/g, '').replace(/\ +/g, ' ')}) "${contracts.shift()}";`
-      })
-    }
-  },
-  'contracts/bet/bet_add_bet_check.liq.tz': {
-    typecheck: false,
-    alias: util.get_random_alias('bet_add_bet_check'),
-    contract: '',
-    arg: () => {
-      const main_contract = file_dict['contracts/bet/bet_main.liq.tz'].contract
-      const calc_contract = file_dict['contracts/bet/bet_add_bet_calc.liq.tz'].contract
-      const mod_contract = file_dict['contracts/bet/bet_add_bet_mod.liq.tz'].contract
-      return `(Pair (Pair 0 (Pair 0 0)) "${main_contract}")`
-    },
-    pre_process: content => {
-      const calc_contract = file_dict['contracts/bet/bet_add_bet_calc.liq.tz'].contract
-      const contracts = [calc_contract]
-      return content.replace(/SOURCE\s+\([^]+?;/g, (raw) => {
-        return `PUSH (${raw.replace('SOURCE', 'contract').replace(';', '').replace(/[\r\n]+/g, '').replace(/\ +/g, ' ')}) "${contracts.shift()}";`
-      })
     }
   }
 }
