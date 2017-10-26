@@ -66,6 +66,7 @@ type return_t =
 | Fail of string
 
 let%entry main (parameter : parameter_t) (storage : unit) [%return : return_t] =
+  (* save tokens for reporters in distribution *)
   let reports_reduce (x : ((key_hash * odd_index) * (token * (key_hash, token) map))) =
     let key = x.(0).(0) in
     let all_token_left = x.(1).(0) in
@@ -84,7 +85,7 @@ let%entry main (parameter : parameter_t) (storage : unit) [%return : return_t] =
   match bet_storage.bookmaker.key with
     | None -> 
       let bet_storage = bet_storage.state <- Disabled "no bookmaker's key found" in
-      let (z, storage) = Contract.call parameter.(2) 0tz () (Override ((None : (key_hash * token) option), bet_storage)) in
+      let (_, storage) = Contract.call parameter.(2) 0tz () (Override ((None : (key_hash * token) option), bet_storage)) in
       (Fail "no bookmaker's key found", storage)
     | Some key ->
       let prev_bookmaker_token = 
