@@ -363,8 +363,7 @@
         })
         .catch(err => {
           if (err) {
-            if (err.location === 261)
-              this.state.loading.tip += `\nno record of your account`
+            this.state.loading.tip += `\nno record of your account`
           }
         })
       },
@@ -372,7 +371,7 @@
         this.tezbridge({method: 'get_contract_info', contract: contracts_xtz.token_reward.contract})
         .then(x => {
           const data = {}
-          x.script.storage.args[0].args.forEach(x => {
+          x.script.storage.args[1].args[0].args.forEach(x => {
             data[x.args[0].string] = x.args[1].string
           })
           this.output.data = data
@@ -433,7 +432,7 @@
           })
         })
         .then(x => {
-          const items = x.script.storage.args[0].args
+          const items = x.script.storage.args[1].args[0].args
           for (let i = 0; i < items.length; i++){
             const key_hash = items[i].args[0].string
             if (key_hash === this.account.pkh) {

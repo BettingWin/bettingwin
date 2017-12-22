@@ -27,10 +27,12 @@
     return prim('Right', [
         prim('Right', [
             prim('Right', [
+              prim('Left', [
                 prim('Pair', [
                     {string: info.target_pkh},
-                    {int: info.amount + ''}
+                    {int: Math.round(info.amount * 100) + ''}
                   ])
+                ])
               ])
           ])
       ])
