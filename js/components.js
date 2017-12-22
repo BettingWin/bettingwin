@@ -339,6 +339,8 @@
                 err_text += `current account doesn't exist in tezos blockchain\nplease add balance first`
               } else if (x.id === 'illTypedDataTypeError') {
                 err_text += `invalid parameters`
+              } else if (x.id === 'tez.addition_overflow') {
+                err_text += `xtz amount overflow`
               }
             })
           else
