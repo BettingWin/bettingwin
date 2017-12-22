@@ -3,7 +3,7 @@
   document.body.style.display = 'block'
 
   let contracts_xtz = {}
-  window.BTW.util.get('contracts_xtz.json')
+  window.BTW.util.get('contracts.json')
   .then(x => {
     contracts_xtz = JSON.parse(x)
   })
